@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context="dk.osl.intelligentbil.LoginActivity">
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="IntelliCar"
+    android:textSize="50dp"
+    android:layout_marginBottom="20dp"
+    />
+
+    <ImageView
+        android:id="@+id/logoimg"
+        android:layout_width="wrap_content"
+        android:layout_height="224dp"
+        android:layout_marginBottom="50dp"
+
+        android:src="@drawable/cardrawing" />
+    <EditText
+        android:id="@+id/usrnametxt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Brugernavn"
+
+        />
+    <EditText
+        android:id="@+id/pwdtxt"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginBottom="20dp"
+        android:text="Ny Bruger"
+
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/loginbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        />
+
+</LinearLayout>
