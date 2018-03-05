@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.osl.intelligentbil.MainActivity">
+    tools:context="dk.osl.intelligentbil.MainActivity"
+    android:orientation="vertical">
 
     <TextView
         android:textAlignment="center"
@@ -13,12 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velkommen user"
+        android:layout_marginBottom="30dp"
         />
 
     <FrameLayout
         android:id="@+id/placeholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     </FrameLayout>
 

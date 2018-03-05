@@ -1,5 +1,6 @@
 package dk.osl.intelligentbil;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,8 +36,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d(TAG, "onClick: login clicked");
 
         if(view == loginBtn){
-           if(validateInput()) ;
-            login();
+           if(validateInput()){
+               login();
+           }
+
         }
 
     }
@@ -47,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         
         String username = usernameEt.getText().toString();
         String password = usernameEt.getText().toString();
+
+        //validate for empty input
         if(username.isEmpty() || password.isEmpty()){
             Log.d(TAG, "validateInput: empty");
             Toast.makeText(getBaseContext(),"Enter both fields", Toast.LENGTH_LONG).show();
@@ -60,6 +65,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void login(){
         String username = usernameEt.getText().toString();
         String password = usernameEt.getText().toString();
+
+        Intent i = new Intent(this,MainActivity.class);
+        i.putExtra("name",username);
+                startActivity(i);
 
 
 

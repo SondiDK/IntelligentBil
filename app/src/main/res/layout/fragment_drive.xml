@@ -1,0 +1,94 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="dk.osl.intelligentbil.DriveFragment">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1">
+
+        <TableRow
+            android:id="@+id/driveFirstRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:textSize="20dp"
+                android:text="DriveInfo"
+                android:layout_gravity="center"
+                android:layout_span="2"
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/drive2Row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+
+            <TextView
+                android:text="Hastighed"
+                android:padding="3dip" />
+
+
+            <TextView
+                android:text="value"
+                android:padding="3dip"
+                android:gravity="right"
+                />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/drive3Row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:text="Effekt"
+                android:padding="3dip" />
+            <TextView
+                android:text="value"
+                android:gravity="right"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/drive4Row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+                android:layout_marginBottom="150dp"
+            >
+            <TextView
+                android:text="Distance "
+                android:padding="3dip" />
+            <TextView
+                android:text="value km"
+                android:gravity="right"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/drivebuttonrow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button
+                android:id="@+id/EndButton"
+                android:text="End"
+                android:layout_gravity="right"
+                android:layout_span="2"
+                />
+
+        </TableRow>
+
+
+
+    </TableLayout>
+
+
+</FrameLayout>

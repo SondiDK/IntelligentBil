@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IntelligentBil.iml" filepath="$PROJECT_DIR$/IntelligentBil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/IntelligentBil.iml" filepath="$PROJECT_DIR$/.idea/IntelligentBil.iml" />
+      <module fileurl="file://D:\Dokumenter\Android\IntelligentBil\IntelligentBil.iml" filepath="D:\Dokumenter\Android\IntelligentBil\IntelligentBil.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

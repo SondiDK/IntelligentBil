@@ -1,13 +1,116 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="dk.osl.intelligentbil.SetupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:stretchColumns="1">
+
+<TableRow
+
+    android:id="@+id/firstRow"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp">
+    <TextView
+        android:textSize="20dp"
+        android:text="Forbindelse"
+        android:layout_gravity="center"
+        android:layout_span="2"
+        />
+
+</TableRow>
+
+        <TableRow
+            android:id="@+id/secondRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+
+            <TextView
+                android:text="BT status:"
+                android:padding="3dip" />
+
+
+            <TextView
+                android:text="not on"
+                android:padding="3dip"
+                android:gravity="right"
+                />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/thirdRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+        <TextView
+                android:text="Connection status: "
+                android:padding="3dip" />
+            <TextView
+                android:text="not connected"
+                android:gravity="right"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+
+            android:id="@+id/fourthRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+            <TextView
+                android:textSize="20dp"
+                android:text="Tur info"
+                android:layout_gravity="center"
+                android:layout_span="2"
+                />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/fithRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp">
+
+
+        <TextView
+            android:text="Tur navn:"
+            android:padding="3dip" />
+
+
+
+
+            <EditText
+
+                android:id="@+id/turNavn"
+                android:gravity="center"
+                android:hint="Tur x"
+                android:singleLine="true" />
+
+        </TableRow>
+        <TableRow
+            android:id="@+id/sixthRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+          >
+
+
+           <Button
+               android:id="@+id/startButton"
+               android:text="Start"
+               android:layout_gravity="right"
+               android:layout_span="2"
+               />
+
+        </TableRow>
+
+    </TableLayout>
 
 </FrameLayout>
