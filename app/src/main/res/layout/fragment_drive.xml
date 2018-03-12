@@ -78,7 +78,7 @@
             >
 
             <Button
-                android:id="@+id/EndButton"
+                android:id="@+id/endButton"
                 android:text="End"
                 android:layout_gravity="right"
                 android:layout_span="2"

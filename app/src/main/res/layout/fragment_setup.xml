@@ -39,6 +39,7 @@
 
 
             <TextView
+                android:id="@+id/btstatus"
                 android:text="not on"
                 android:padding="3dip"
                 android:gravity="right"

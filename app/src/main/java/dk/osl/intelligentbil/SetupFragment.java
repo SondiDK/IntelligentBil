@@ -3,6 +3,8 @@ package dk.osl.intelligentbil;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Oliver on 26-02-2018.
@@ -19,7 +28,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "Setupfrag";
     Button startButton;
     EditText driveName;
-
+    TextView btStatus;
+    Timer timer=new Timer();//Used for a delay to provide user feedback
+    Handler handler;
     IDataCommunication mCallback;
 
     //Todo Denne fragment viser basic setup. Den skal starte ny fragment der viser live data.
@@ -37,9 +48,13 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         startButton = view.findViewById(R.id.startButton);
         driveName = view.findViewById(R.id.turNavn);
 
+        //Todo find en måde at update guien på, når der er bluetooth.
+        btStatus = view.findViewById(R.id.btstatus);
+
 
 
         startButton.setOnClickListener(this);
+
 
 
     }
@@ -84,6 +99,10 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
                     + " must implement DataCommunication");
         }
     }
+
+
+
+
 
 
 

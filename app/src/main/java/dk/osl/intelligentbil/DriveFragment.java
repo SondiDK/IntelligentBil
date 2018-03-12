@@ -1,24 +1,32 @@
 package dk.osl.intelligentbil;
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
+
 
 
 /**
  * Created by Oliver on 04-03-2018.
  */
 
-public class DriveFragment extends Fragment {
- TextView textview;
-    IDataCommunication mCallback;
+public class DriveFragment extends Fragment implements View.OnClickListener {
 
-   //Todo Denne fragment viser basic setup. Den skal starte ny fragment der viser live data.
+    private static final String TAG = "DRIVEfrag";
+
+    TextView textview;
+    IDataCommunication mCallback;
+    Button endButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -31,24 +39,31 @@ public class DriveFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
 
+    endButton = getActivity().findViewById(R.id.endButton);
+    endButton.setOnClickListener(this);
 
-textview = getActivity().findViewById(R.id.headline);
-textview.setText(mCallback.getMyVariableX());
+    textview = getActivity().findViewById(R.id.headline);
+    //sætter overskriften fra mainakt til at være overskrift på turen.
+    textview.setText(mCallback.getMyVariableX());
+
+
     }
 
     // @Override
     public void onClick(View view) {
-        // if(view==startbtn){
-        // Begin the transaction
-        // FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-// Replace the contents of the container with the new fragment
-        //ft.replace(R.id.your_placeholder, new PlayerFragment());
+        Log.d(TAG, "onClick: ");
+         if(view==endButton){
+        // Begin the transaction
+         FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+         // Replace the contents of the container with the new fragment
+        ft.replace(R.id.placeholder, new SummaryFragment());
         //ft.addToBackStack(null);
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
-        //ft.commit();
-        //}
+
+        // Complete the changes added above
+        ft.commit();
+        }
     }
     @Override
     public void onAttach(Context context) {
