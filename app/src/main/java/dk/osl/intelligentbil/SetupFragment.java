@@ -55,10 +55,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         //Todo find en måde at update guien på, når der er bluetooth.
         btStatus = view.findViewById(R.id.btstatus);
 
+
+
         Log.d(TAG, "onClick:"+ mCallback.isConnected());
 
 
-       checkForBT();
+        checkForBT();
         startButton.setOnClickListener(this);
     }
 

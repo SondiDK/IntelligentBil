@@ -1,6 +1,7 @@
 package dk.osl.intelligentbil;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,15 +19,22 @@ import com.macroyau.blue2serial.BluetoothSerialListener;
 
 import org.w3c.dom.Text;
 
+import java.util.Set;
+
 public class MainActivity extends FragmentActivity implements IDataCommunication, BluetoothSerialListener {
     private String x;
     boolean b;
     private int y;
     BluetoothSerial bt;
-
+    private final static int REQUEST_ENABLE_BT = 1;
     TextView userEt;
+    BluetoothAdapter mBluetoothAdapter;
+    String TAG =  "MAIN AKT";
+
+
 
     public MainActivity() {
+
     }
 
     @Override
@@ -36,29 +44,56 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
         userEt = (TextView)findViewById(R.id.headline);
         bt = new BluetoothSerial(this, this);
 
-        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        registerReceiver(mReceiver, filter);
+       // IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        //registerReceiver(BTTest.mReceiver, filter);
 
         Bundle extras = getIntent().getExtras();
 
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
-        // Begin the transaction
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-        SetupFragment fragment = new SetupFragment();
+        setupFragment();
+        promptForBT();
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
-// Replace the contents of the container with the new fragment
-        ft.replace(R.id.placeholder, fragment);
-      //
-        // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
-        // ft.addToBackStack(null);
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
-        ft.commit();
+        if (pairedDevices.size() > 0) {
+            // There are paired devices. Get the name and address of each paired device.
+            for (BluetoothDevice device : pairedDevices) {
+                String deviceName = device.getName();
+                String deviceHardwareAddress = device.getAddress(); // MAC address
+                Log.d(TAG, deviceName);
+            }
+        }else Log.d(TAG, "onCreate: mno paired");
+
 
     }
 
+    public void promptForBT(){
 
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+        }
+
+    }
+public void setupFragment(){
+
+
+    // Begin the transaction
+    android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+    SetupFragment fragment = new SetupFragment();
+
+// Replace the contents of the container with the new fragment
+    ft.replace(R.id.placeholder, fragment);
+    //
+    // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
+    // ft.addToBackStack(null);
+// or ft.add(R.id.your_placeholder, new FooFragment());
+// Complete the changes added above
+    ft.commit();
+
+
+}
     @Override
     public void setMyVariableX(String x) {
         this.x = x;
@@ -111,7 +146,7 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
     public void onBluetoothSerialWrite(String message) {
 
     }
-
+    /*
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -135,4 +170,5 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
             }
         }
     };
+    */
 }
