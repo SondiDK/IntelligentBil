@@ -32,8 +32,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     Timer timer=new Timer();//Used for a delay to provide user feedback
     Handler handler;
     IDataCommunication mCallback;
+    private Handler mHandler;
 
     //Todo Denne fragment viser basic setup. Den skal starte ny fragment der viser live data.
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -51,14 +55,12 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         //Todo find en måde at update guien på, når der er bluetooth.
         btStatus = view.findViewById(R.id.btstatus);
 
+        Log.d(TAG, "onClick:"+ mCallback.isConnected());
 
 
+       checkForBT();
         startButton.setOnClickListener(this);
-
-
-
     }
-
 
     // @Override
     public void onClick(View view) {
@@ -78,6 +80,8 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
             //dette sætter variablen i mainack, dvs turens navn. bagefter kan jeg hente denne værdi i de andre fragmenter
             mCallback.setMyVariableX(driveName.getText().toString());
+
+
 // Complete the changes added above
             ft.commit();
         }
@@ -101,7 +105,17 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     }
 
 
+    public void checkForBT() {
 
+        if (mCallback.isConnected()){
+            btStatus.setText("Conected");
+        }
+        else{
+            btStatus.setText("Please turn on BT");
+        }
+
+
+    }
 
 
 

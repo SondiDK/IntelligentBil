@@ -31,7 +31,7 @@ public class SummaryFragment extends Fragment {
     }
 
     // @Override
-    public void onClick(View view) {
+    public  void onClick(View view) {
         // if(view==startbtn){
         // Begin the transaction
         // FragmentTransaction ft = getFragmentManager().beginTransaction();
