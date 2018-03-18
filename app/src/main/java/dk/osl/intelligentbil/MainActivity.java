@@ -52,8 +52,8 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
         setupFragment();
-        promptForBT();
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+       // promptForBT();
+/*        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
@@ -64,7 +64,7 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
             }
         }else Log.d(TAG, "onCreate: mno paired");
 
-
+*/
     }
 
     public void promptForBT(){

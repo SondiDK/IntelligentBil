@@ -4,9 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context="dk.osl.intelligentbil.MainActivity"
     android:orientation="vertical">
-
+    <!--
+  https://material.io/color/#!/?view.left=0&view.right=0&primary.color=607D8B&primary.text.color=000000
+    -->
     <TextView
         android:textAlignment="center"
         android:id="@+id/headline"
@@ -14,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Velkommen user"
+        android:textColor="@android:color/black"
         android:layout_marginBottom="30dp"
         />
 
