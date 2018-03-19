@@ -17,7 +17,11 @@
 
         <activity android:name=".MainActivity"></activity>
 
+        <activity
+            android:name=".TerminalActivity"
+            android:label="@string/app_name" >
 
+        </activity>
 
         <activity android:name=".LoginActivity">
             <intent-filter>

@@ -20,6 +20,7 @@
     <TextView
         android:textSize="20dp"
         android:text="Forbindelse"
+        android:textColor="@android:color/black"
         android:layout_gravity="center"
         android:layout_span="2"
         />
@@ -40,7 +41,7 @@
 
             <TextView
                 android:id="@+id/btstatus"
-                android:text="not on"
+                android:text=""
                 android:padding="3dip"
                 android:gravity="right"
                 />
@@ -67,6 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
             <TextView
+                android:textColor="@android:color/black"
                 android:textSize="20dp"
                 android:text="Tur info"
                 android:layout_gravity="center"
@@ -83,7 +85,9 @@
 
         <TextView
             android:text="Tur navn:"
-            android:padding="3dip" />
+            android:padding="3dip"
+            android:layout_width="200dp"
+            />
 
 
 
@@ -106,7 +110,8 @@
            <Button
                android:id="@+id/startButton"
                android:text="Start"
-               android:layout_gravity="right"
+               android:background="@color/colorPrimaryDark"
+               android:layout_gravity="center"
                android:layout_span="2"
                />
 

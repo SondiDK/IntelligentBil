@@ -6,28 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+
 /**
  * Created by oliver on 3/13/18.
  */
 
-public class BTTest {
+public class BTTest  {
 
 
-    public static BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                Log.d("BT ", "CHANGED: ");
-                final int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                        BluetoothAdapter.ERROR);
-                switch (bluetoothState) {
-                    case BluetoothAdapter.STATE_ON:
-                        Log.d("BT ", "ON: ");
-                        break;
-                }
-            }
-        }
-    };
 }
