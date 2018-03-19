@@ -21,6 +21,43 @@
         android:layout_marginBottom="30dp"
         />
 
+    <Button
+        android:text="test"
+        android:id="@+id/testbt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+    <Button
+        android:text="testsend"
+        android:id="@+id/testbtsend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+    <Button
+        android:text="stop"
+        android:id="@+id/testbtstop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+    <TextView
+        android:id="@+id/connected"
+        android:text="connected?"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+        <TextView
+            android:id="@+id/btrece"
+            android:text="test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+
     <FrameLayout
         android:id="@+id/placeholder"
         android:layout_width="match_parent"

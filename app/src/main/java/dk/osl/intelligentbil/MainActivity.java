@@ -11,9 +11,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.macroyau.blue2serial.BluetoothDeviceListDialog;
 import com.macroyau.blue2serial.BluetoothSerial;
 import com.macroyau.blue2serial.BluetoothSerialListener;
 
@@ -21,15 +24,17 @@ import org.w3c.dom.Text;
 
 import java.util.Set;
 
-public class MainActivity extends FragmentActivity implements IDataCommunication, BluetoothSerialListener {
+public class MainActivity extends FragmentActivity implements IDataCommunication, BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener, View.OnClickListener {
     private String x;
     boolean b;
     private int y;
-    BluetoothSerial bt;
+    BluetoothSerial bluetoothSerial;
     private final static int REQUEST_ENABLE_BT = 1;
-    TextView userEt;
-    BluetoothAdapter mBluetoothAdapter;
-    String TAG =  "MAIN AKT";
+    TextView userEt, btreceived, conkt;
+    Button testbtn, send, stop;
+
+
+    String TAG =  "HOVED";
 
 
 
@@ -42,8 +47,11 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         userEt = (TextView)findViewById(R.id.headline);
-        bt = new BluetoothSerial(this, this);
-
+        testbtn = findViewById(R.id.testbt);
+        send = findViewById(R.id.testbtsend);
+        btreceived = findViewById(R.id.btrece);
+        conkt = findViewById(R.id.connected);
+        stop = findViewById(R.id.testbtstop);
        // IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         //registerReceiver(BTTest.mReceiver, filter);
 
@@ -52,29 +60,32 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
         setupFragment();
-       // promptForBT();
-/*        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        testbtn.setOnClickListener(this);
+        send.setOnClickListener(this);
+        stop.setOnClickListener(this);
+        bluetoothSerial = new BluetoothSerial(this, this);
 
-        if (pairedDevices.size() > 0) {
-            // There are paired devices. Get the name and address of each paired device.
-            for (BluetoothDevice device : pairedDevices) {
-                String deviceName = device.getName();
-                String deviceHardwareAddress = device.getAddress(); // MAC address
-                Log.d(TAG, deviceName);
-            }
-        }else Log.d(TAG, "onCreate: mno paired");
-
-*/
     }
 
-    public void promptForBT(){
+    @Override
+    protected void onStart() {
+        Log.d(TAG, "onStart: ");
+        super.onStart();
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
+        // Check Bluetooth availability on the device and set up the Bluetooth adapter
+        bluetoothSerial.setup();
 
+    }
+
+
+    private void showDeviceListDialog() {
+        // Display dialog for selecting a remote Bluetooth device
+        BluetoothDeviceListDialog dialog = new BluetoothDeviceListDialog(this);
+        dialog.setOnDeviceSelectedListener(this);
+        dialog.setTitle("Snuggi");
+        dialog.setDevices(bluetoothSerial.getPairedDevices());
+        dialog.showAddress(true);
+        dialog.show();
     }
 public void setupFragment(){
 
@@ -88,8 +99,8 @@ public void setupFragment(){
     //
     // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
     // ft.addToBackStack(null);
-// or ft.add(R.id.your_placeholder, new FooFragment());
-// Complete the changes added above
+    // or ft.add(R.id.your_placeholder, new FooFragment());
+    // Complete the changes added above
     ft.commit();
 
 
@@ -102,6 +113,8 @@ public void setupFragment(){
 
     @Override
     public boolean isConnected() {
+
+
         return false;
     }
 
@@ -129,16 +142,23 @@ public void setupFragment(){
 
     @Override
     public void onConnectingBluetoothDevice() {
+        updateBluetoothState();
 
     }
 
     @Override
     public void onBluetoothDeviceConnected(String name, String address) {
-
+        updateBluetoothState();
     }
 
     @Override
     public void onBluetoothSerialRead(String message) {
+        Log.d(TAG, "onBluetoothSerialRead: CALLED");
+        StringBuilder sb = new StringBuilder();
+        for(byte b:  message.getBytes())
+            sb.append(String.format("%02x", b));
+
+        btreceived.setText(sb);
 
     }
 
@@ -146,6 +166,55 @@ public void setupFragment(){
     public void onBluetoothSerialWrite(String message) {
 
     }
+
+    @Override
+    public void onBluetoothDeviceSelected(BluetoothDevice device) {
+        Log.d(TAG, "onBluetoothDeviceSelected: ");
+        bluetoothSerial.connect(device);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if(view == testbtn){
+            showDeviceListDialog();
+        }
+        if(view==send){
+            Log.d(TAG, "onClick: CALLED");
+            bluetoothSerial.write("data", true);
+
+        }if(view==stop){
+            Log.d(TAG, "onClick: CALLED");
+            bluetoothSerial.write("stop", true);
+
+        }
+    }
+    private void updateBluetoothState() {
+        // Get the current Bluetooth state
+        final int state;
+        if (bluetoothSerial != null)
+            state = bluetoothSerial.getState();
+        else
+            state = BluetoothSerial.STATE_DISCONNECTED;
+
+        // Display the current state on the app bar as the subtitle
+        String subtitle;
+        switch (state) {
+            case BluetoothSerial.STATE_CONNECTING:
+                subtitle ="status_connecting";
+                break;
+            case BluetoothSerial.STATE_CONNECTED:
+                subtitle ="status_connected" + bluetoothSerial.getConnectedDeviceName();
+                break;
+            default:
+                subtitle = "status_disconnected";
+                break;
+        }
+
+       conkt.setText(subtitle);
+    }
+
     /*
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override

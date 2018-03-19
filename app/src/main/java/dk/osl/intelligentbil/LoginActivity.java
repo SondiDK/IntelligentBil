@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = usernameEt.getText().toString();
 
         Intent i = new Intent(this,MainActivity.class);
+       // Intent i = new Intent(this,TerminalActivity.class);
         i.putExtra("name",username);
                 startActivity(i);
 
