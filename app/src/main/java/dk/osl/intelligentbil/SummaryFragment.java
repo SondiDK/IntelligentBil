@@ -56,6 +56,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
 
                 // Complete the changes added above
                 ft.commit();
+                //fet
 
             }
     @Override
