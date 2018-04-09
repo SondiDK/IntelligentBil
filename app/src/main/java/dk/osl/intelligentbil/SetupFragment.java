@@ -2,6 +2,7 @@ package dk.osl.intelligentbil;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,8 +46,11 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         connectButton = view.findViewById(R.id.cntbtn);
         driveName = view.findViewById(R.id.turNavn);
 
+        //gi underline til connect button
+        connectButton.setPaintFlags(connectButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         //klikkers
         connectButton.setOnClickListener(this);
+
         startButton.setOnClickListener(this);
     }
 

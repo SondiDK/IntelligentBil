@@ -3,6 +3,7 @@ package dk.osl.intelligentbil;
 import android.bluetooth.BluetoothDevice;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +13,7 @@ import com.macroyau.blue2serial.BluetoothDeviceListDialog;
 import com.macroyau.blue2serial.BluetoothSerial;
 import com.macroyau.blue2serial.BluetoothSerialListener;
 
-public class MainActivity extends FragmentActivity implements IDataCommunication,
+public class MainActivity extends AppCompatActivity implements IDataCommunication,
         BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,
         View.OnClickListener {
 
@@ -23,7 +24,7 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
     DataInterpreter dt;
     private final static int REQUEST_ENABLE_BT = 1;
     TextView userEt, btreceived, conkt;
-    Button testbtn, send, stop;
+    Button testbtn, send;
 
 
    private final static  String TAG =  "MainActivity";
@@ -40,7 +41,6 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
         setContentView(R.layout.activity_main);
         userEt = findViewById(R.id.headline);
 
-        stop = findViewById(R.id.testbtstop);
 
 
 
@@ -48,10 +48,12 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
 
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
+        //todo decide if this is approach
+        setTitle(getTitle()+extras.getString("name"));
         setupFragment();
 
 
-        stop.setOnClickListener(this);
+
         bluetoothSerial = new BTSerial(this, this);
         dt = new DataInterpreter();
 
@@ -208,10 +210,6 @@ public void setupFragment(){
         if(view==send){
             Log.d(TAG, "onClick: CALLED");
 
-
-        }if(view==stop){
-            Log.d(TAG, "onClick: CALLED");
-            bluetoothSerial.write("stop", true);
 
         }
     }
