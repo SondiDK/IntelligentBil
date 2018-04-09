@@ -34,28 +34,26 @@
             android:layout_marginBottom="10dp">
 
 
-            <TextView
-                android:text="BT status:"
-                android:padding="3dip" />
 
-
-            <TextView
-                android:id="@+id/btstatus"
-                android:text=""
-                android:padding="3dip"
-                android:gravity="right"
-                />
         </TableRow>
 
         <TableRow
+
             android:id="@+id/thirdRow"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
-        <TextView
-                android:text="Connection status: "
-                android:padding="3dip" />
+       <Button
+           android:id="@+id/cntbtn"
+           android:text="connect"
+           android:layout_gravity="center"
+           android:background="@android:color/white"
+
+
+           />
             <TextView
+                android:layout_gravity="center"
+                android:id="@+id/connectstatus"
                 android:text="not connected"
                 android:gravity="right"
                 android:padding="3dip" />
@@ -84,13 +82,11 @@
 
 
         <TextView
+
             android:text="Tur navn:"
             android:padding="3dip"
             android:layout_width="200dp"
             />
-
-
-
 
             <EditText
 
@@ -102,16 +98,20 @@
         </TableRow>
         <TableRow
             android:id="@+id/sixthRow"
-            android:layout_width="fill_parent"
+
             android:layout_height="wrap_content"
           >
 
 
            <Button
+
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                android:id="@+id/startButton"
-               android:text="Start"
+               android:text="Start tur"
                android:background="@color/colorPrimaryDark"
-               android:layout_gravity="center"
+               android:textColor="@android:color/white"
+
                android:layout_span="2"
                />
 

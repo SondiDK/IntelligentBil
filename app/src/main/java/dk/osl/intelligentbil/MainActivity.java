@@ -1,40 +1,32 @@
 package dk.osl.intelligentbil;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.macroyau.blue2serial.BluetoothDeviceListDialog;
 import com.macroyau.blue2serial.BluetoothSerial;
 import com.macroyau.blue2serial.BluetoothSerialListener;
 
-import org.w3c.dom.Text;
+public class MainActivity extends FragmentActivity implements IDataCommunication,
+        BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,
+        View.OnClickListener {
 
-import java.util.Set;
-
-public class MainActivity extends FragmentActivity implements IDataCommunication, BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener, View.OnClickListener {
     private String x;
     boolean b;
     private int y;
-    BluetoothSerial bluetoothSerial;
+    BTSerial bluetoothSerial;
+    DataInterpreter dt;
     private final static int REQUEST_ENABLE_BT = 1;
     TextView userEt, btreceived, conkt;
     Button testbtn, send, stop;
 
 
-    String TAG =  "HOVED";
+   private final static  String TAG =  "MainActivity";
 
 
 
@@ -46,24 +38,22 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        userEt = (TextView)findViewById(R.id.headline);
-        testbtn = findViewById(R.id.testbt);
-        send = findViewById(R.id.testbtsend);
-        btreceived = findViewById(R.id.btrece);
-        conkt = findViewById(R.id.connected);
+        userEt = findViewById(R.id.headline);
+
         stop = findViewById(R.id.testbtstop);
-       // IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-        //registerReceiver(BTTest.mReceiver, filter);
+
+
 
         Bundle extras = getIntent().getExtras();
 
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
         setupFragment();
-        testbtn.setOnClickListener(this);
-        send.setOnClickListener(this);
+
+
         stop.setOnClickListener(this);
-        bluetoothSerial = new BluetoothSerial(this, this);
+        bluetoothSerial = new BTSerial(this, this);
+        dt = new DataInterpreter();
 
     }
 
@@ -78,14 +68,18 @@ public class MainActivity extends FragmentActivity implements IDataCommunication
     }
 
 
-    private void showDeviceListDialog() {
-        // Display dialog for selecting a remote Bluetooth device
-        BluetoothDeviceListDialog dialog = new BluetoothDeviceListDialog(this);
-        dialog.setOnDeviceSelectedListener(this);
-        dialog.setTitle("Snuggi");
-        dialog.setDevices(bluetoothSerial.getPairedDevices());
-        dialog.showAddress(true);
-        dialog.show();
+    public void showDeviceListDialog() {
+        
+        if(bluetoothSerial.isBluetoothEnabled()) {
+            // Display dialog for selecting a remote Bluetooth device
+            BluetoothDeviceListDialog dialog = new BluetoothDeviceListDialog(this);
+            dialog.setOnDeviceSelectedListener(this);
+            dialog.setTitle("Select Micro controller");
+            dialog.setDevices(bluetoothSerial.getPairedDevices());
+            dialog.showAddress(true);
+            dialog.show();
+        }
+        else Log.d(TAG, "showDeviceListDialog: CONNECT BT");
     }
 public void setupFragment(){
 
@@ -96,10 +90,10 @@ public void setupFragment(){
 
 // Replace the contents of the container with the new fragment
     ft.replace(R.id.placeholder, fragment);
-    //
+
     // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
     // ft.addToBackStack(null);
-    // or ft.add(R.id.your_placeholder, new FooFragment());
+
     // Complete the changes added above
     ft.commit();
 
@@ -112,12 +106,16 @@ public void setupFragment(){
     }
 
     @Override
-    public boolean isConnected() {
-
-
-        return false;
+    public void startListening() {
+        bluetoothSerial.write("data", true);
     }
 
+    @Override
+    public void stopListening(){bluetoothSerial.write("stop", true);}
+
+    public boolean isBluetoothOn(){
+    return bluetoothSerial.isBluetoothEnabled();
+    }
 
     @Override
     public String getMyVariableX(){
@@ -153,12 +151,39 @@ public void setupFragment(){
 
     @Override
     public void onBluetoothSerialRead(String message) {
-        Log.d(TAG, "onBluetoothSerialRead: CALLED");
-        StringBuilder sb = new StringBuilder();
-        for(byte b:  message.getBytes())
-            sb.append(String.format("%02x", b));
 
-        btreceived.setText(sb);
+        Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message);
+
+        TextView speedView = findViewById(R.id.speedView);
+        TextView effectView = findViewById(R.id.effectview);
+        TextView distview =  findViewById(R.id.distanceview);
+
+        if(getSupportFragmentManager().findFragmentByTag("driveFrag")!=null )
+
+            switch (dt.handleShit(message)){
+                case UNKNOWN:
+                    Log.e(TAG, "onBluetoothSerialRead:SHit array" );
+                    break;
+                case SPEED:
+                    String speed= message.substring(4,6);
+                    Log.d(TAG, "onBluetoothSerialRead: SPEED:" + speed);
+                    speedView.setText(speed);
+                    break;
+                case EFFECT:
+                    String efkt= message.substring(4,6);
+                    Log.d(TAG, "onBluetoothSerialRead: effect:" + efkt);
+                    effectView.setText(efkt);
+                    break;
+                case DISTANCE:
+                    String dist= message.substring(4,6);
+                    Log.d(TAG, "onBluetoothSerialRead: dist:" + dist);
+                    distview.setText(dist);
+                    break;
+
+            }
+
+
+
 
     }
 
@@ -182,7 +207,7 @@ public void setupFragment(){
         }
         if(view==send){
             Log.d(TAG, "onClick: CALLED");
-            bluetoothSerial.write("data", true);
+
 
         }if(view==stop){
             Log.d(TAG, "onClick: CALLED");
@@ -190,7 +215,7 @@ public void setupFragment(){
 
         }
     }
-    private void updateBluetoothState() {
+    public void updateBluetoothState() {
         // Get the current Bluetooth state
         final int state;
         if (bluetoothSerial != null)
@@ -202,42 +227,19 @@ public void setupFragment(){
         String subtitle;
         switch (state) {
             case BluetoothSerial.STATE_CONNECTING:
-                subtitle ="status_connecting";
+                subtitle ="Connecting...";
                 break;
             case BluetoothSerial.STATE_CONNECTED:
-                subtitle ="status_connected" + bluetoothSerial.getConnectedDeviceName();
+                subtitle ="Connected to" + bluetoothSerial.getConnectedDeviceName();
                 break;
             default:
-                subtitle = "status_disconnected";
+                subtitle = "Disconnected";
                 break;
         }
 
-       conkt.setText(subtitle);
+        TextView view = findViewById(R.id.connectstatus);
+        view.setText(subtitle);
     }
 
-    /*
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            TextView btStatus = findViewById(R.id.btstatus);
-            final String action = intent.getAction();
 
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                Log.d("BT ", "CHANGED: ");
-                final int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                        BluetoothAdapter.ERROR);
-                switch (bluetoothState) {
-                    case BluetoothAdapter.STATE_ON:
-                         Log.d("BT ", "ON: ");
-
-                      btStatus.setText("On");
-                        break;
-                        case BluetoothAdapter.STATE_OFF:
-                            btStatus.setText("Off");
-                            break;
-                }
-            }
-        }
-    };
-    */
 }

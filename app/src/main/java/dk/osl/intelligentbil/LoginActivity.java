@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //validate for empty input
         if(username.isEmpty() || password.isEmpty()){
             Log.d(TAG, "validateInput: empty");
-            Toast.makeText(getBaseContext(),"Enter both fields", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(),"Enter both fields", Toast.LENGTH_SHORT).show();
         }
 
         return isValid;
@@ -67,9 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = usernameEt.getText().toString();
 
         Intent i = new Intent(this,MainActivity.class);
-       // Intent i = new Intent(this,TerminalActivity.class);
         i.putExtra("name",username);
-                startActivity(i);
+        startActivity(i);
 
 
 

@@ -14,11 +14,11 @@
             android:id="@+id/driveFirstRow"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="30dp">
             <TextView
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
-                android:text="DriveInfo"
+                android:text="Drive Live Data"
                 android:layout_gravity="center"
                 android:layout_span="2"
                 />
@@ -29,30 +29,35 @@
             android:id="@+id/drive2Row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="50dp">
 
 
             <TextView
+                android:textColor="@android:color/black"
                 android:text="Hastighed"
                 android:padding="3dip" />
 
 
             <TextView
+                android:id="@+id/speedView"
                 android:text="value"
                 android:padding="3dip"
                 android:gravity="right"
                 />
         </TableRow>
 
+
         <TableRow
             android:id="@+id/drive3Row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="50dp">
             <TextView
+                android:textColor="@android:color/black"
                 android:text="Effekt"
                 android:padding="3dip" />
             <TextView
+                android:id="@+id/effectview"
                 android:text="value"
                 android:gravity="right"
                 android:padding="3dip" />
@@ -65,9 +70,11 @@
                 android:layout_marginBottom="150dp"
             >
             <TextView
+                android:textColor="@android:color/black"
                 android:text="Distance "
                 android:padding="3dip" />
             <TextView
+                android:id="@+id/distanceview"
                 android:text="value km"
                 android:gravity="right"
                 android:padding="3dip" />

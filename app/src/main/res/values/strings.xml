@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IntelligentBil</string>
+    <string name="app_name">Intelligent Bil</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

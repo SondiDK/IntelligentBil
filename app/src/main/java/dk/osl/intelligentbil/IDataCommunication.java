@@ -7,7 +7,9 @@ package dk.osl.intelligentbil;
 public interface IDataCommunication {
     public String getMyVariableX();
     public void setMyVariableX(String x);
-    public boolean isConnected();
+    public void startListening();
+    public void stopListening();
+
 
 
 }

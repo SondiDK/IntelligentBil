@@ -23,7 +23,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DRIVEfrag";
 
-    TextView textview;
+    TextView textview, spdView, efview, dview;
     IDataCommunication mCallback;
     Button endButton;
 
@@ -38,18 +38,26 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
-
+       /* Dont need diz cuz setting it in MainAkt
+        spdView = view.findViewById(R.id.speedView);
+        efview = view.findViewById(R.id.effectview);
+        dview = view.findViewById(R.id.distanceview);
+        */
     endButton = getActivity().findViewById(R.id.endButton);
     endButton.setOnClickListener(this);
 
     textview = getActivity().findViewById(R.id.headline);
     //sætter overskriften fra mainakt til at være overskrift på turen.
     textview.setText(mCallback.getMyVariableX());
-
+    //sender "data" og ber om data
+    mCallback.startListening();
 
     }
 
-    // @Override
+
+
+
+     @Override
     public void onClick(View view) {
 
         Log.d(TAG, "onClick: ");
