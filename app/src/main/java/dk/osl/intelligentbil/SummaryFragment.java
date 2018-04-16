@@ -38,8 +38,9 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
 
     // @Override
     public  void onClick(View view) {
+
             if(view==bckButton) {
-                mCallback.stopListening();
+
             }
 
 

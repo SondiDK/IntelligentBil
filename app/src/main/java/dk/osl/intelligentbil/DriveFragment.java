@@ -1,8 +1,11 @@
 package dk.osl.intelligentbil;
 
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -62,15 +65,30 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
         Log.d(TAG, "onClick: ");
          if(view==endButton){
-        // Begin the transaction
-         FragmentTransaction ft = getFragmentManager().beginTransaction();
 
-         // Replace the contents of the container with the new fragment
-        ft.replace(R.id.placeholder, new SummaryFragment());
-        //ft.addToBackStack(null);
+             AlertDialog.Builder builder;
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                 builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+             } else {
+                 builder = new AlertDialog.Builder(getContext());
+             }
+             builder.setTitle("End Drive")
+                     .setMessage("Are you sure you want to end your drive?")
+                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                         public void onClick(DialogInterface dialog, int which) {
+                             mCallback.stopListening();
+                             startSumFrag();
+                         }
+                     })
+                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                         public void onClick(DialogInterface dialog, int which) {
+                             // do nothing
+                         }
+                     })
+                     .setIcon(android.R.drawable.ic_dialog_alert)
+                     .show();
 
-        // Complete the changes added above
-        ft.commit();
+
         }
     }
     @Override
@@ -88,7 +106,17 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                     + " must implement DataCommunication");
         }
     }
+    public void startSumFrag(){
+        // Begin the transaction
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
 
+        // Replace the contents of the container with the new fragment
+        ft.replace(R.id.placeholder, new SummaryFragment());
+        //ft.addToBackStack(null);
+
+        // Complete the changes added above
+        ft.commit();
+    }
 
 }
 

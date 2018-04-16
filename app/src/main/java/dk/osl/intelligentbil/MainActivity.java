@@ -25,15 +25,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     private final static int REQUEST_ENABLE_BT = 1;
     TextView userEt, btreceived, conkt;
     Button testbtn, send;
-
-
-   private final static  String TAG =  "MainActivity";
-
-
-
-    public MainActivity() {
-
-    }
+    private final static  String TAG =  "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,18 +33,12 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         setContentView(R.layout.activity_main);
         userEt = findViewById(R.id.headline);
 
-
-
-
         Bundle extras = getIntent().getExtras();
-
         userEt.setText("Velkommen, "  + extras.getString("name"));
 
         //todo decide if this is approach
         setTitle(getTitle()+extras.getString("name"));
         setupFragment();
-
-
 
         bluetoothSerial = new BTSerial(this, this);
         dt = new DataInterpreter();
@@ -83,24 +69,20 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         }
         else Log.d(TAG, "showDeviceListDialog: CONNECT BT");
     }
-public void setupFragment(){
-
+    public void setupFragment(){
 
     // Begin the transaction
     android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
     SetupFragment fragment = new SetupFragment();
 
-// Replace the contents of the container with the new fragment
+    // Replace the contents of the container with the new fragment
     ft.replace(R.id.placeholder, fragment);
-
     // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
     // ft.addToBackStack(null);
 
     // Complete the changes added above
     ft.commit();
-
-
-}
+    }
     @Override
     public void setMyVariableX(String x) {
         this.x = x;
@@ -114,7 +96,7 @@ public void setupFragment(){
 
     @Override
     public void stopListening(){bluetoothSerial.write("stop", true);}
-
+    @Override
     public boolean isBluetoothOn(){
     return bluetoothSerial.isBluetoothEnabled();
     }
@@ -238,6 +220,9 @@ public void setupFragment(){
         TextView view = findViewById(R.id.connectstatus);
         view.setText(subtitle);
     }
-
+    @Override
+public boolean isConnected(){
+       return bluetoothSerial.isConnected();
+}
 
 }

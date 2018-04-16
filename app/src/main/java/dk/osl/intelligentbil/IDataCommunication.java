@@ -9,6 +9,8 @@ public interface IDataCommunication {
     public void setMyVariableX(String x);
     public void startListening();
     public void stopListening();
+    public boolean isBluetoothOn();
+    public boolean isConnected();
 
 
 
