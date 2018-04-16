@@ -34,10 +34,10 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         userEt = findViewById(R.id.headline);
 
         Bundle extras = getIntent().getExtras();
-        userEt.setText("Velkommen, "  + extras.getString("name"));
+        userEt.setText("Velkommen");
 
         //todo decide if this is approach
-        setTitle(getTitle()+extras.getString("name"));
+        setTitle(getTitle()+": "+extras.getString("name"));
         setupFragment();
 
         bluetoothSerial = new BTSerial(this, this);
@@ -135,38 +135,38 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
     @Override
     public void onBluetoothSerialRead(String message) {
-
-        Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message);
+        int messageLength = message.length();
+        Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message + " Length: " + messageLength);
 
         TextView speedView = findViewById(R.id.speedView);
         TextView effectView = findViewById(R.id.effectview);
         TextView distview =  findViewById(R.id.distanceview);
 
-        if(getSupportFragmentManager().findFragmentByTag("driveFrag")!=null )
+        if(getSupportFragmentManager().findFragmentByTag("driveFrag")!=null ){
 
             switch (dt.handleShit(message)){
                 case UNKNOWN:
-                    Log.e(TAG, "onBluetoothSerialRead:SHit array" );
+                    Log.e(TAG, "onBluetoothSerialRead: Not knowny" );
                     break;
                 case SPEED:
-                    String speed= message.substring(4,6);
+                    String speed= message.substring(4,messageLength);
                     Log.d(TAG, "onBluetoothSerialRead: SPEED:" + speed);
                     speedView.setText(speed);
                     break;
                 case EFFECT:
-                    String efkt= message.substring(4,6);
+                    String efkt= message.substring(4,messageLength);
                     Log.d(TAG, "onBluetoothSerialRead: effect:" + efkt);
                     effectView.setText(efkt);
                     break;
                 case DISTANCE:
-                    String dist= message.substring(4,6);
+                    String dist= message.substring(4,messageLength);
                     Log.d(TAG, "onBluetoothSerialRead: dist:" + dist);
                     distview.setText(dist);
                     break;
 
             }
 
-
+        }
 
 
     }

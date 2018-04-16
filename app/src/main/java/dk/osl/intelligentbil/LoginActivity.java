@@ -23,7 +23,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordEt = (EditText) findViewById(R.id.pwdtxt);
 
         loginBtn = (Button) findViewById(R.id.loginbtn);
-
         loginBtn.setOnClickListener(this);
 
 
@@ -63,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     public void login(){
+
         String username = usernameEt.getText().toString();
         String password = usernameEt.getText().toString();
 

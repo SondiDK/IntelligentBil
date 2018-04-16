@@ -61,10 +61,11 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 //todo skal ikke kunne stare frag, hvis ingen forbindelse
         Log.d(TAG, "onClick: ");
         if (view == startButton ) {
-            if(mCallback.isConnected())startDriveFragment();
-            else Toast.makeText(getContext(),"Connect to devicee", Toast.LENGTH_SHORT).show();
+            if(mCallback.isConnected()) startDriveFragment();
+            else Toast.makeText(getContext(),"Connect to device", Toast.LENGTH_SHORT).show();
         }
         if(view== connectButton){
+
             ((MainActivity)getActivity()).showDeviceListDialog();
         }
 

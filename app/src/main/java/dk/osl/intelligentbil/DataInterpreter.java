@@ -31,8 +31,8 @@ public class DataInterpreter {
     //start på hvordan det kan handles
     public TYPE handleShit(String message){
 
-        //modtager array på længde 6 (hvis det ikke er 6 så fuck it?.)
-        if (message.length() != ARRAY_LENGTH) return TYPE.UNKNOWN;
+        //modtager array på længde 6 (
+        if (message.length() >= ARRAY_LENGTH) return TYPE.UNKNOWN;
 
 
         if (message.startsWith(START_ID)){
@@ -56,7 +56,7 @@ public class DataInterpreter {
         return TYPE.UNKNOWN;
     }
 
-    public  enum TYPE {
+    public enum TYPE {
         SPEED,
         EFFECT,
         DISTANCE,

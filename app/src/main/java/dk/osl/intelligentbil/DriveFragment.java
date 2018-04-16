@@ -50,8 +50,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     endButton.setOnClickListener(this);
 
     textview = getActivity().findViewById(R.id.headline);
+
     //sætter overskriften fra mainakt til at være overskrift på turen.
     textview.setText(mCallback.getMyVariableX());
+
     //sender "data" og ber om data
     mCallback.startListening();
 
