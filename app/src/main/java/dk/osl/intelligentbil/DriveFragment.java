@@ -114,13 +114,8 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                          public void onClick(DialogInterface dialog, int which) {
                              mCallback.stopListening();
-                             System.out.println("SPEED LIST LENGTH" +  speedList.size());
-                             System.out.println("EFECT LIST LENGTH" +  effectList.size());
-                             /*
-                             for(int a:speedList){
-                                 System.out.println("LIST" +a);
-                             }
-                             */
+                             updateLists();
+
                              startSumFrag();
                          }
                      })
@@ -160,6 +155,19 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
         // Complete the changes added above
         ft.commit();
+    }
+
+    //Sets the lists
+    public void updateLists(){
+        System.out.println("SPEED LIST LENGTH" +  speedList.size());
+        System.out.println("EFECT LIST LENGTH" +  effectList.size());
+        /*
+           for(int a:speedList){
+              System.out.println("LIST" +a);
+                             }
+                             */
+        mCallback.setEffectList(effectList);
+        mCallback.setSpeedList(speedList);
     }
 
 }

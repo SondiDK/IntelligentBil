@@ -13,10 +13,13 @@ import com.macroyau.blue2serial.BluetoothDeviceListDialog;
 import com.macroyau.blue2serial.BluetoothSerial;
 import com.macroyau.blue2serial.BluetoothSerialListener;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements IDataCommunication,
         BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,
         View.OnClickListener {
 
+    List<Integer> speedList,effectList;
     private String x;
     boolean b;
     private int y;
@@ -211,5 +214,26 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 public boolean isConnected(){
        return bluetoothSerial.isConnected();
 }
+
+    @Override
+    public List getEffectList() {
+        return effectList;
+    }
+
+    @Override
+    public void setEffectList(List eft) {
+        this.effectList = eft;
+
+    }
+
+    @Override
+    public List getSpeedList() {
+        return speedList;
+    }
+
+    @Override
+    public void setSpeedList(List spd) {
+    this.speedList = spd;
+    }
 
 }
