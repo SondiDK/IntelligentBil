@@ -15,11 +15,12 @@ public class DataInterpreter {
 
 
     //ff betyder start byte
-    private final static String START_ID = "FF";
+    private final static String START_ID = "ff";
 
-    private final static String SPEED_ID = "XX";
-    private final static String EFFECT_ID = "YY";
-    private final static String DIST_ID = "ZZ";
+    private final static String EFFECT_ID = "49";
+    private final static String SPEED_ID = "50";
+
+    private final static String DIST_ID = "51";
 
 
     //næste 2 bit betyder kode
@@ -30,25 +31,24 @@ public class DataInterpreter {
 
     //start på hvordan det kan handles
     public TYPE handleShit(String message){
-
+        Log.d(TAG, "handleShit " + message);
         //modtager array på længde 6 (
-        if (message.length() >= ARRAY_LENGTH) return TYPE.UNKNOWN;
+        //if (message.length() >= ARRAY_LENGTH) return TYPE.UNKNOWN;
 
 
-        if (message.startsWith(START_ID)){
+        if (message.contains(START_ID)&& message.length()>=6){
+            Log.d(TAG, "STARTS WITth" + START_ID);
 
             switch (message.substring(2,4)){
-
+                case EFFECT_ID:
+                    Log.d(TAG, "MessageType: EFFECT");
+                    return TYPE.EFFECT;
                 case SPEED_ID:
                     Log.d(TAG, "MessageType: SPEED");
                     return TYPE.SPEED;
 
-                case EFFECT_ID:
-                    Log.d(TAG, "MessageType: SPEED");
-                    return TYPE.EFFECT;
-
                 case DIST_ID:
-                     Log.d(TAG, "MessageType: SPEED");
+                     Log.d(TAG, "MessageType: Dist");
                     return TYPE.DISTANCE;
             }
         }

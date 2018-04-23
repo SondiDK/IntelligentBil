@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean validateInput() {
         Log.d(TAG, "validateInput: called");
         boolean isValid = true;
-        
+
         String username = usernameEt.getText().toString();
         String password = usernameEt.getText().toString();
 

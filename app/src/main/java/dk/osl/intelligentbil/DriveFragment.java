@@ -15,7 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -25,10 +26,11 @@ import android.widget.TextView;
 public class DriveFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DRIVEfrag";
-
+    List<Integer> speedList,effectList;
     TextView textview, spdView, efview, dview;
     IDataCommunication mCallback;
     Button endButton;
+    DataInterpreter dt;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -40,12 +42,14 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+            speedList =  new ArrayList<>();
+        effectList =  new ArrayList<>();
 
-       /* Dont need diz cuz setting it in MainAkt
+        dt = new DataInterpreter();
         spdView = view.findViewById(R.id.speedView);
         efview = view.findViewById(R.id.effectview);
         dview = view.findViewById(R.id.distanceview);
-        */
+
     endButton = getActivity().findViewById(R.id.endButton);
     endButton.setOnClickListener(this);
 
@@ -59,7 +63,38 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    public void updateView(String message){
 
+        int messageLength = message.length();
+        Log.d(TAG, "DRIVEFRAG: Data full message: " + message + " Length: " + messageLength);
+        switch (dt.handleShit(message)) {
+            case UNKNOWN:
+                Log.e(TAG, "FROM DISTFRAG: Not knowny");
+                break;
+            case SPEED:
+                String speed = message.substring(4, messageLength);
+                String newSpeed = speed.split("ff")[0];
+                Log.d(TAG, "FROM DISTFRAG: SPEED:" + newSpeed);
+                speedList.add(Integer.parseInt(newSpeed));
+                spdView.setText(newSpeed);
+                break;
+            case EFFECT:
+                String efkt = message.substring(4, messageLength);
+                String newefkt = efkt.split("ff")[0];
+                Log.d(TAG, "FROM DISTFRAG: effect:" + newefkt);
+                effectList.add(Integer.parseInt(newefkt));
+                efview.setText(newefkt);
+                break;
+            case DISTANCE:
+                String dist = message.substring(4, messageLength);
+                String newdist = dist.split("ff")[0];
+                Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
+
+                dview.setText(newdist);
+                break;
+        }
+
+        }
 
 
      @Override
@@ -79,6 +114,13 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                          public void onClick(DialogInterface dialog, int which) {
                              mCallback.stopListening();
+                             System.out.println("SPEED LIST LENGTH" +  speedList.size());
+                             System.out.println("EFECT LIST LENGTH" +  effectList.size());
+                             /*
+                             for(int a:speedList){
+                                 System.out.println("LIST" +a);
+                             }
+                             */
                              startSumFrag();
                          }
                      })

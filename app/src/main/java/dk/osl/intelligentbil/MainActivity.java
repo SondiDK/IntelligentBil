@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     boolean b;
     private int y;
     BTSerial bluetoothSerial;
-    DataInterpreter dt;
+
     private final static int REQUEST_ENABLE_BT = 1;
     TextView userEt, btreceived, conkt;
     Button testbtn, send;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         setupFragment();
 
         bluetoothSerial = new BTSerial(this, this);
-        dt = new DataInterpreter();
+
 
     }
 
@@ -95,7 +95,11 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     }
 
     @Override
-    public void stopListening(){bluetoothSerial.write("stop", true);}
+    public void stopListening(){
+        bluetoothSerial.write("stop", true);
+        bluetoothSerial.stop();
+    }
+
     @Override
     public boolean isBluetoothOn(){
     return bluetoothSerial.isBluetoothEnabled();
@@ -135,41 +139,24 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
     @Override
     public void onBluetoothSerialRead(String message) {
-        int messageLength = message.length();
-        Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message + " Length: " + messageLength);
+       // int messageLength = message.length();
+      //  Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message + " Length: " + messageLength);
 
-        TextView speedView = findViewById(R.id.speedView);
-        TextView effectView = findViewById(R.id.effectview);
-        TextView distview =  findViewById(R.id.distanceview);
 
-        if(getSupportFragmentManager().findFragmentByTag("driveFrag")!=null ){
+        DriveFragment frag =(DriveFragment)getFragmentManager().findFragmentByTag("driveFrag");
 
-            switch (dt.handleShit(message)){
-                case UNKNOWN:
-                    Log.e(TAG, "onBluetoothSerialRead: Not knowny" );
-                    break;
-                case SPEED:
-                    String speed= message.substring(4,messageLength);
-                    Log.d(TAG, "onBluetoothSerialRead: SPEED:" + speed);
-                    speedView.setText(speed);
-                    break;
-                case EFFECT:
-                    String efkt= message.substring(4,messageLength);
-                    Log.d(TAG, "onBluetoothSerialRead: effect:" + efkt);
-                    effectView.setText(efkt);
-                    break;
-                case DISTANCE:
-                    String dist= message.substring(4,messageLength);
-                    Log.d(TAG, "onBluetoothSerialRead: dist:" + dist);
-                    distview.setText(dist);
-                    break;
+        boolean test= frag!=null;
+        //Log.d(TAG, "is NULL? " + test);
 
-            }
+        if(test){
+           // System.out.println("hej");
+            frag.updateView(message);
+        }
 
         }
 
 
-    }
+
 
     @Override
     public void onBluetoothSerialWrite(String message) {
