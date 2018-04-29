@@ -1,7 +1,6 @@
 package dk.osl.intelligentbil;
 
 import android.bluetooth.BluetoothDevice;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,12 +20,9 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
     List<Integer> speedList,effectList;
     private String x;
-    boolean b;
-    private int y;
     BTSerial bluetoothSerial;
 
-    private final static int REQUEST_ENABLE_BT = 1;
-    TextView userEt, btreceived, conkt;
+    TextView userEt;
     Button testbtn, send;
     private final static  String TAG =  "MainActivity";
 
@@ -45,7 +41,6 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
         bluetoothSerial = new BTSerial(this, this);
 
-
     }
 
     @Override
@@ -57,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         bluetoothSerial.setup();
 
     }
-
 
     public void showDeviceListDialog() {
         
@@ -91,10 +85,35 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         this.x = x;
 
     }
+    @Override
+    public String getMyVariableX(){
+        return x;
+    }
+
+    @Override
+    public List getSpeedList() {
+        return speedList;
+    }
+
+    @Override
+    public void setSpeedList(List spd) {
+        this.speedList = spd;
+    }
+
+    @Override
+    public List getEffectList() {
+        return effectList;
+    }
+
+    @Override
+    public void setEffectList(List eft) {
+        this.effectList = eft;
+
+    }
 
     @Override
     public void startListening() {
-        bluetoothSerial.write("data", true);
+        bluetoothSerial.write("stub", true);
     }
 
     @Override
@@ -108,26 +127,6 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     return bluetoothSerial.isBluetoothEnabled();
     }
 
-    @Override
-    public String getMyVariableX(){
-        return x;
-    }
-
-
-    @Override
-    public void onBluetoothNotSupported() {
-
-    }
-
-    @Override
-    public void onBluetoothDisabled() {
-
-    }
-
-    @Override
-    public void onBluetoothDeviceDisconnected() {
-
-    }
 
     @Override
     public void onConnectingBluetoothDevice() {
@@ -144,12 +143,8 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     public void onBluetoothSerialRead(String message) {
        // int messageLength = message.length();
       //  Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message + " Length: " + messageLength);
-
-
         DriveFragment frag =(DriveFragment)getFragmentManager().findFragmentByTag("driveFrag");
-
         boolean test= frag!=null;
-        //Log.d(TAG, "is NULL? " + test);
 
         if(test){
            // System.out.println("hej");
@@ -157,14 +152,6 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         }
 
         }
-
-
-
-
-    @Override
-    public void onBluetoothSerialWrite(String message) {
-
-    }
 
     @Override
     public void onBluetoothDeviceSelected(BluetoothDevice device) {
@@ -216,24 +203,23 @@ public boolean isConnected(){
 }
 
     @Override
-    public List getEffectList() {
-        return effectList;
-    }
-
-    @Override
-    public void setEffectList(List eft) {
-        this.effectList = eft;
+    public void onBluetoothNotSupported() {
 
     }
 
     @Override
-    public List getSpeedList() {
-        return speedList;
+    public void onBluetoothDisabled() {
+
     }
 
     @Override
-    public void setSpeedList(List spd) {
-    this.speedList = spd;
+    public void onBluetoothDeviceDisconnected() {
+
+    }
+
+    @Override
+    public void onBluetoothSerialWrite(String message) {
+
     }
 
 }

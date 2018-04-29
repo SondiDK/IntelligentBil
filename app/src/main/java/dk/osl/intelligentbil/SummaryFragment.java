@@ -14,7 +14,7 @@ import java.util.List;
 
 
 public class SummaryFragment extends Fragment implements View.OnClickListener {
-    TextView textview;
+    TextView textview, averageSpeed, averagePower, totalDistance;
     IDataCommunication mCallback;
     Button bckButton;
     List<Integer> speedList, effectList;
@@ -25,42 +25,50 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_summary, null);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
 
         textview = getActivity().findViewById(R.id.headline);
         textview.setText(mCallback.getMyVariableX());
-        bckButton = view.findViewById(R.id.sumButton);
 
+        averageSpeed = view.findViewById(R.id.avgspd);
+        averagePower = view.findViewById(R.id.avgpow);
+        totalDistance = view.findViewById(R.id.totaldist);
+
+         getLists();
+
+        averageSpeed.setText(Double.toString(calculateListAverage(speedList)));
+        averagePower.setText(Double.toString(calculateListAverage(effectList)));
+
+
+        bckButton = view.findViewById(R.id.sumButton);
         bckButton.setOnClickListener(this);
 
-        getLists();
     }
 
     // @Override
     public void onClick(View view) {
 
         if (view == bckButton) {
+            // Begin the transaction
+            android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
+            SetupFragment fragment = new SetupFragment();
 
+// Replace the contents of the container with the new fragment
+            ft.replace(R.id.placeholder, fragment);
+
+            // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
+            // ft.addToBackStack(null);
+
+            // Complete the changes added above
+            ft.commit();
+            //fetsd
         }
 
 
-        // Begin the transaction
-        android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-        SetupFragment fragment = new SetupFragment();
 
-// Replace the contents of the container with the new fragment
-        ft.replace(R.id.placeholder, fragment);
-
-        // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
-        // ft.addToBackStack(null);
-
-        // Complete the changes added above
-        ft.commit();
-        //fetsd
 
     }
 
@@ -80,8 +88,9 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void getLists() {
 
+    //få liste fra interfacet
+    public void getLists() {
         effectList = mCallback.getEffectList();
         speedList = mCallback.getSpeedList();
 

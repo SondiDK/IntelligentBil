@@ -37,6 +37,7 @@
 
 
             <TextView
+                android:id="@+id/avgspd"
                 android:text="value"
                 android:padding="3dip"
                 android:gravity="right"
@@ -52,6 +53,7 @@
                 android:text=" gnm Effekt"
                 android:padding="3dip" />
             <TextView
+                android:id="@+id/avgpow"
                 android:text="value"
                 android:gravity="right"
                 android:padding="3dip" />
@@ -68,6 +70,7 @@
                 android:padding="3dip"
                 android:text="Distance" />
             <TextView
+                android:id="@+id/totaldist"
                 android:text="value km"
                 android:gravity="right"
                 android:padding="3dip" />

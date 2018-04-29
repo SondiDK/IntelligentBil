@@ -18,6 +18,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static dk.osl.intelligentbil.DataInterpreter.TYPE.UNKNOWN;
+
 
 /**
  * Created by Oliver on 04-03-2018.
@@ -42,7 +44,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-            speedList =  new ArrayList<>();
+        speedList =  new ArrayList<>();
         effectList =  new ArrayList<>();
 
         dt = new DataInterpreter();
@@ -67,32 +69,35 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
         int messageLength = message.length();
         Log.d(TAG, "DRIVEFRAG: Data full message: " + message + " Length: " + messageLength);
-        switch (dt.handleShit(message)) {
-            case UNKNOWN:
-                Log.e(TAG, "FROM DISTFRAG: Not knowny");
-                break;
-            case SPEED:
-                String speed = message.substring(4, messageLength);
-                String newSpeed = speed.split("ff")[0];
-                Log.d(TAG, "FROM DISTFRAG: SPEED:" + newSpeed);
-                speedList.add(Integer.parseInt(newSpeed));
-                spdView.setText(newSpeed);
-                break;
-            case EFFECT:
-                String efkt = message.substring(4, messageLength);
-                String newefkt = efkt.split("ff")[0];
-                Log.d(TAG, "FROM DISTFRAG: effect:" + newefkt);
-                effectList.add(Integer.parseInt(newefkt));
-                efview.setText(newefkt);
-                break;
-            case DISTANCE:
-                String dist = message.substring(4, messageLength);
-                String newdist = dist.split("ff")[0];
-                Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
 
-                dview.setText(newdist);
-                break;
+       DataInterpreter.TYPE[] types = dt.divideShit(message);
+        String[] splittedArray = dt.newArray;
+
+        for (int i = 1; i <splittedArray.length ; i++) {
+            switch (types[i-1]) {
+                case UNKNOWN:
+                    Log.e(TAG, "FROM DISTFRAG: Not knowny");
+                    break;
+                case SPEED:
+                    String newSpeed = splittedArray[i].substring(2,splittedArray[i].length());
+                    Log.d(TAG, "FROM DISTFRAG: SPEED:" + newSpeed);
+                    speedList.add(Integer.parseInt(newSpeed));
+                    spdView.setText(newSpeed);
+                    break;
+                case EFFECT:
+                    String newefkt = splittedArray[i].substring(2,splittedArray[i].length());
+                    Log.d(TAG, "FROM DISTFRAG: effect:" + newefkt);
+                    effectList.add(Integer.parseInt(newefkt));
+                    efview.setText(newefkt);
+                    break;
+                case DISTANCE:
+                    String newdist = splittedArray[i].substring(2,splittedArray[i].length());
+                    Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
+                    dview.setText(newdist);
+                    break;
+            }
         }
+
 
         }
 
@@ -115,7 +120,6 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                          public void onClick(DialogInterface dialog, int which) {
                              mCallback.stopListening();
                              updateLists();
-
                              startSumFrag();
                          }
                      })
@@ -164,8 +168,11 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         /*
            for(int a:speedList){
               System.out.println("LIST" +a);
-                             }
+                           }
                              */
+        speedList.add(500);
+        effectList.add(500);
+
         mCallback.setEffectList(effectList);
         mCallback.setSpeedList(speedList);
     }
