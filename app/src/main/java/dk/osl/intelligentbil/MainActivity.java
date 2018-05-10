@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         setContentView(R.layout.activity_main);
         userEt = findViewById(R.id.headline);
 
+
         Bundle extras = getIntent().getExtras();
         userEt.setText("Velkommen");
 

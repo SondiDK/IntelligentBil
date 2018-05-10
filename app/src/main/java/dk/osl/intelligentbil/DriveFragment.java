@@ -28,11 +28,12 @@ import static dk.osl.intelligentbil.DataInterpreter.TYPE.UNKNOWN;
 public class DriveFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DRIVEfrag";
-    List<Integer> speedList,effectList;
+    List<Integer> speedList,effectList, distList;
     TextView textview, spdView, efview, dview;
     IDataCommunication mCallback;
     Button endButton;
     DataInterpreter dt;
+    int startDist;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -46,8 +47,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         speedList =  new ArrayList<>();
         effectList =  new ArrayList<>();
+        distList =  new ArrayList<>();
 
         dt = new DataInterpreter();
+
         spdView = view.findViewById(R.id.speedView);
         efview = view.findViewById(R.id.effectview);
         dview = view.findViewById(R.id.distanceview);
@@ -71,33 +74,60 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         Log.d(TAG, "DRIVEFRAG: Data full message: " + message + " Length: " + messageLength);
 
        DataInterpreter.TYPE[] types = dt.divideShit(message);
-        String[] splittedArray = dt.newArray;
+       if( types!= null) {
+           String[] splittedArray = dt.newArray;
 
-        for (int i = 1; i <splittedArray.length ; i++) {
-            switch (types[i-1]) {
-                case UNKNOWN:
-                    Log.e(TAG, "FROM DISTFRAG: Not knowny");
-                    break;
-                case SPEED:
-                    String newSpeed = splittedArray[i].substring(2,splittedArray[i].length());
-                    Log.d(TAG, "FROM DISTFRAG: SPEED:" + newSpeed);
-                    speedList.add(Integer.parseInt(newSpeed));
-                    spdView.setText(newSpeed);
-                    break;
-                case EFFECT:
-                    String newefkt = splittedArray[i].substring(2,splittedArray[i].length());
-                    Log.d(TAG, "FROM DISTFRAG: effect:" + newefkt);
-                    effectList.add(Integer.parseInt(newefkt));
-                    efview.setText(newefkt);
-                    break;
-                case DISTANCE:
-                    String newdist = splittedArray[i].substring(2,splittedArray[i].length());
-                    Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
-                    dview.setText(newdist);
-                    break;
-            }
-        }
+           for (int i = 1; i < splittedArray.length; i++) {
+               switch (types[i - 1]) {
+                   case UNKNOWN:
+                       Log.e(TAG, "FROM DISTFRAG: Not knowny");
+                       break;
+                   case SPEED:
+                       String newSpeed = splittedArray[i].substring(2, splittedArray[i].length());
+                       if(!(newSpeed.length()<3)){
+                       int svalue = dt.convertFromHex(newSpeed);
+                       Log.d(TAG, "FROM DISTFRAG: SPEED:" + svalue);
+                       if(svalue == 0 || svalue ==1 || svalue == 2 ){
+                           System.out.println("SPEC CASE: " + newSpeed);
 
+                       }
+                     if(svalue!=0){
+                         speedList.add(svalue);
+                         spdView.setText(Integer.toString(svalue));
+                     }
+
+                       }
+                       break;
+                   case EFFECT:
+                       String newefkt = splittedArray[i].substring(2, splittedArray[i].length());
+                       if(!(newefkt.length()<3)){
+                           int value = dt.convertFromHex(newefkt);
+                           Log.d(TAG, "FROM DISTFRAG: effect:" + value);
+                           if(value!=0){
+                               effectList.add(value);
+                               efview.setText(Integer.toString(value));
+                           }
+
+                       }
+                       break;
+                   case DISTANCE:
+                       String newdist = splittedArray[i].substring(2, splittedArray[i].length());
+                       Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
+
+                       if(!(newdist.length()<3)) {
+                           int value = dt.convertFromHex(newdist);
+                           Log.d(TAG, "FROM DISTFRAG: effect:" + value);
+                           if (value != 0) {
+                               distList.add(value);
+                               dview.setText(Integer.toString(value));
+                               }
+
+
+                       }
+                       break;
+               }
+           }
+       }
 
         }
 
@@ -165,13 +195,14 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     public void updateLists(){
         System.out.println("SPEED LIST LENGTH" +  speedList.size());
         System.out.println("EFECT LIST LENGTH" +  effectList.size());
-        /*
+
            for(int a:speedList){
               System.out.println("LIST" +a);
                            }
-                             */
-        speedList.add(500);
-        effectList.add(500);
+
+        for(int b:effectList){
+            System.out.println("LIST" +b);
+        }
 
         mCallback.setEffectList(effectList);
         mCallback.setSpeedList(speedList);

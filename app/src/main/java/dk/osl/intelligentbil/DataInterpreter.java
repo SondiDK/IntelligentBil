@@ -22,40 +22,49 @@ public class DataInterpreter {
 
     public TYPE[] divideShit(String message){
 
-       newArray =  message.split(START_ID);
-
+        if(message.length()>=6) {
+            newArray = message.split(START_ID);
         int length = newArray.length;
 
-        TYPE[] types = new TYPE[length-1];
+        TYPE[] types = new TYPE[length - 1];
 
-        for (int i = 1; i < newArray.length ; i++) {
-            String currentMessage = newArray[i];
-             types[i-1] = handleShit(currentMessage);
+
+
+
+            for (int i = 1; i < newArray.length; i++) {
+                String currentMessage = newArray[i];
+                types[i - 1] = handleShit(currentMessage);
+            }
+            return  types;
         }
-        return  types;
+      else return null;
     }
 
     //start på hvordan det kan handles
     public TYPE handleShit(String message){
         Log.d(TAG, "handleShit " + message);
-       System.out.println(message);
+      // System.out.println("size" + message.length());
 
-           // System.out.println(message.substring(2,6));
-            switch (message.substring(0,2)){
-                case EFFECT_ID:
-                    Log.d(TAG, "MessageType: EFFECT");
-                    return TYPE.EFFECT;
-                case SPEED_ID:
-                    Log.d(TAG, "MessageType: SPEED");
-                    return TYPE.SPEED;
-                case DIST_ID:
-                    //System.out.println("effect");
-                     Log.d(TAG, "MessageType: Dist");
-                    return TYPE.DISTANCE;
-                }
+          if(message.length()>1) {
+              switch (message.substring(0, 2)) {
+                  case EFFECT_ID:
+                      Log.d(TAG, "MessageType: EFFECT");
+                      return TYPE.EFFECT;
+                  case SPEED_ID:
+                      Log.d(TAG, "MessageType: SPEED");
+                      return TYPE.SPEED;
+                  case DIST_ID:
+                      //System.out.println("effect");
+                      Log.d(TAG, "MessageType: Dist");
+                      return TYPE.DISTANCE;
+              }
 
-
+          }
         return TYPE.UNKNOWN;
+    }
+
+    public int convertFromHex(String hex){
+        return Integer.parseInt(hex,16);
     }
 
     public enum TYPE {
