@@ -8,15 +8,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static dk.osl.intelligentbil.DataInterpreter.TYPE.UNKNOWN;
 
@@ -34,7 +37,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     Button endButton;
     DataInterpreter dt;
     int startDist;
-
+    private Chronometer chronometer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -45,11 +48,18 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        dt = new DataInterpreter();
+
         speedList =  new ArrayList<>();
         effectList =  new ArrayList<>();
         distList =  new ArrayList<>();
+        chronometer = view.findViewById(R.id.chronometer);
 
-        dt = new DataInterpreter();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
+
+
+
 
         spdView = view.findViewById(R.id.speedView);
         efview = view.findViewById(R.id.effectview);
@@ -150,6 +160,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                          public void onClick(DialogInterface dialog, int which) {
                              mCallback.stopListening();
                              updateLists();
+                             stopTimer();
                              startSumFrag();
                          }
                      })
@@ -206,6 +217,15 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
         mCallback.setEffectList(effectList);
         mCallback.setSpeedList(speedList);
+    }
+
+    public void stopTimer(){
+        chronometer.stop();
+        long timeWhenStopped = SystemClock.elapsedRealtime()-chronometer.getBase();
+        long toMin = TimeUnit.MILLISECONDS.toMinutes(timeWhenStopped);
+        Log.d(TAG, "stopTimer: " + toMin);
+
+        mCallback.setDuration((int)toMin);
     }
 
 }

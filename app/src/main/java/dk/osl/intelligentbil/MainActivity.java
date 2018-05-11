@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         View.OnClickListener {
 
     List<Integer> speedList,effectList;
+    private int duration;
     private String x;
     BTSerial bluetoothSerial;
 
@@ -99,6 +100,16 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     @Override
     public void setSpeedList(List spd) {
         this.speedList = spd;
+    }
+
+    @Override
+    public int getDuration() {
+        return duration;
+    }
+
+    @Override
+    public void setDuration(int duration) {
+    this.duration = duration;
     }
 
     @Override

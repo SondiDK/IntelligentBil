@@ -16,6 +16,8 @@ public interface IDataCommunication {
     public boolean isConnected();
 
 
+
+
     ////////Mainakt implenterer disse. kalder på setList i DriveAkt for at give dem værdien og så og getList i summAkt.
 
 
@@ -23,11 +25,13 @@ public interface IDataCommunication {
     public List getEffectList();
     public void setEffectList(List eft );
 
+
     public List getSpeedList();
     public void setSpeedList(List spd );
 
 
-
+    public int getDuration();
+    public void setDuration(int duration);
 
 }
 

@@ -64,7 +64,7 @@
             android:id="@+id/sum4Row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="150dp"
+            android:layout_marginBottom="10dp"
             >
 
             <TextView
@@ -73,6 +73,23 @@
             <TextView
                 android:id="@+id/totaldist"
                 android:text="value km"
+                android:gravity="right"
+                android:padding="3dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/sum5Row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+
+            <TextView
+                android:padding="3dip"
+                android:text="duration" />
+            <TextView
+                android:id="@+id/duration"
+                android:text="value min"
                 android:gravity="right"
                 android:padding="3dip" />
         </TableRow>

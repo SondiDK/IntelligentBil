@@ -65,21 +65,43 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/drive4Row"
+        android:id="@+id/drive4Row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        >
+        <TextView
+            android:textColor="@android:color/black"
+            android:text="Distance "
+            android:padding="3dip" />
+        <TextView
+            android:id="@+id/distanceview"
+            android:text="value km"
+            android:gravity="right"
+            android:padding="3dip" />
+    </TableRow>
+
+
+        <TableRow
+            android:id="@+id/drive5Row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-                android:layout_marginBottom="150dp"
+            android:layout_marginBottom="50dp"
             >
             <TextView
                 android:textColor="@android:color/black"
-                android:text="Distance "
+                android:text="Durarion "
                 android:padding="3dip" />
-            <TextView
-                android:id="@+id/distanceview"
-                android:text="value km"
+            <Chronometer
+
+                android:id="@+id/chronometer"
+                android:format="%s"
                 android:gravity="right"
-                android:padding="3dip" />
+               />
         </TableRow>
+
+
+
         <TableRow
             android:id="@+id/drivebuttonrow"
 

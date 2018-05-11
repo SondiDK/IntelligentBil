@@ -23,8 +23,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "Setupfrag";
     Button startButton,connectButton;
     EditText driveName;
-
-
     IDataCommunication mCallback;
 
 

@@ -42,7 +42,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         averageSpeed = view.findViewById(R.id.avgspd);
         averagePower = view.findViewById(R.id.avgpow);
         totalDistance = view.findViewById(R.id.totaldist);
-
+//Todo sæt minutter ind
         getLists();
         Double avgspd = calculateListAverage(speedList);
         Double avgpow = calculateListAverage(effectList);
