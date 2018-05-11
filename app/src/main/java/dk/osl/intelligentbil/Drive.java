@@ -3,7 +3,6 @@ package dk.osl.intelligentbil;
 public class Drive {
 
     private String Name;
-
     private Double SpeedAverage;
     private Double PowerAverage;
     private Double Distance;

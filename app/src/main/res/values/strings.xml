@@ -15,7 +15,7 @@
     </string>
 
 
-        <string name="con"><u>Connect</u></string>
+    <string name="con"><u>Connect</u></string>
 
     <string name="status_disconnected">Disconnected</string>
     <string name="status_connecting">Connecting&#8230;</string>

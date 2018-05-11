@@ -16,7 +16,7 @@ public class ExampleUnitTest {
     public void addition_isCorrect() throws Exception {
 
         DataInterpreter d = new DataInterpreter();
-        String test = "00ff517b17ff517b17ff5117ff517b17";
+        String test = "00ff51";
 
 
         DataInterpreter.TYPE[] a = d.divideShit(test);
