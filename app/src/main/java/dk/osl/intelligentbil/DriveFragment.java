@@ -36,7 +36,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     IDataCommunication mCallback;
     Button endButton;
     DataInterpreter dt;
+
+    boolean isStart = true;
     int startDist;
+
     private Chronometer chronometer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -90,21 +93,17 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
            for (int i = 1; i < splittedArray.length; i++) {
                switch (types[i - 1]) {
                    case UNKNOWN:
-                       Log.e(TAG, "FROM DISTFRAG: Not knowny");
+                       Log.e(TAG, "FROM DISTFRAG: Not known");
                        break;
                    case SPEED:
                        String newSpeed = splittedArray[i].substring(2, splittedArray[i].length());
                        if(!(newSpeed.length()<3)){
                        int svalue = dt.convertFromHex(newSpeed);
                        Log.d(TAG, "FROM DISTFRAG: SPEED:" + svalue);
-                       if(svalue == 0 || svalue ==1 || svalue == 2 ){
-                           System.out.println("SPEC CASE: " + newSpeed);
 
-                       }
-                     if(svalue!=0){
                          speedList.add(svalue);
-                         spdView.setText(Integer.toString(svalue));
-                     }
+                         spdView.setText(Integer.toString(svalue) + "km/h");
+
 
                        }
                        break;
@@ -113,33 +112,31 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                        if(!(newefkt.length()<3)){
                            int value = dt.convertFromHex(newefkt);
                            Log.d(TAG, "FROM DISTFRAG: effect:" + value);
-                           if(value!=0){
-                               effectList.add(value);
-                               efview.setText(Integer.toString(value));
-                           }
-
-                       }
+                           effectList.add(value);
+                           efview.setText(Integer.toString(value) + "W");
+                                                  }
                        break;
                    case DISTANCE:
                        String newdist = splittedArray[i].substring(2, splittedArray[i].length());
                        Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
-
                        if(!(newdist.length()<3)) {
                            int value = dt.convertFromHex(newdist);
-                           Log.d(TAG, "FROM DISTFRAG: effect:" + value);
-                           if (value != 0) {
-                               distList.add(value);
-                               dview.setText(Integer.toString(value));
-                               }
+                           if(isStart) {
+                               isStart = false;
+                               startDist = value;
+                           }
+                           Log.d(TAG, "FROM DISTFRAG: dist:" + value);
+                           //distList.add(value);
+                               int result = value-startDist;
+                               dview.setText(Integer.toString(result));
+                           }                       }
 
-
-                       }
-                       break;
+                                          break;
                }
            }
        }
 
-        }
+
 
 
      @Override
@@ -191,15 +188,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         }
     }
     public void startSumFrag(){
-        // Begin the transaction
+
         FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-        // Replace the contents of the container with the new fragment
         ft.replace(R.id.placeholder, new SummaryFragment());
-        //ft.addToBackStack(null);
-
-        // Complete the changes added above
-        ft.commit();
+         ft.commit();
     }
 
     //Sets the lists
@@ -222,10 +214,13 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     public void stopTimer(){
         chronometer.stop();
         long timeWhenStopped = SystemClock.elapsedRealtime()-chronometer.getBase();
-        long toMin = TimeUnit.MILLISECONDS.toMinutes(timeWhenStopped);
+        Log.d(TAG, "stopTimer: Mili " + timeWhenStopped);
+
+        //taget kun hele minutter
+        int toMin = (int) TimeUnit.MILLISECONDS.toMinutes(timeWhenStopped);
         Log.d(TAG, "stopTimer: " + toMin);
 
-        mCallback.setDuration((int)toMin);
+        mCallback.setDuration(toMin);
     }
 
 }

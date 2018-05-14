@@ -11,16 +11,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
+import dk.osl.intelligentbil.testretro.Drive;
+
 
 public class SummaryFragment extends Fragment implements View.OnClickListener {
-    TextView textview, averageSpeed, averagePower, totalDistance;
+    TextView textview, averageSpeed, averagePower, totalDistance, duration;
     IDataCommunication mCallback;
     Button bckButton;
     List<Integer> speedList, effectList;
-
+   DecimalFormat df = new DecimalFormat("#0.00");
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -37,21 +40,25 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
 
 
         textview = getActivity().findViewById(R.id.headline);
-        textview.setText(mCallback.getMyVariableX());
+        textview .setText(mCallback.getMyVariableX());
 
         averageSpeed = view.findViewById(R.id.avgspd);
         averagePower = view.findViewById(R.id.avgpow);
+        duration = view.findViewById(R.id.duration);
         totalDistance = view.findViewById(R.id.totaldist);
 //Todo sæt minutter ind
         getLists();
         Double avgspd = calculateListAverage(speedList);
         Double avgpow = calculateListAverage(effectList);
 
-        averageSpeed.setText(Double.toString(avgspd));
-        averagePower.setText(Double.toString(avgpow));
 
 
-        Drive drive = new Drive(mCallback.getMyVariableX(),avgpow, avgspd,40.5);
+        averageSpeed.setText(df.format(avgspd));
+        averagePower.setText(df.format(avgpow));
+
+        duration.setText(Integer.toString(mCallback.getDuration()));
+
+       // Drive drive = new Drive(mCallback.getMyVariableX(),avgpow, avgspd,40.5);
 
         bckButton = view.findViewById(R.id.sumButton);
         bckButton.setOnClickListener(this);

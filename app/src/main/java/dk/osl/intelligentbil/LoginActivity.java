@@ -18,10 +18,19 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import dk.osl.intelligentbil.testretro.GetDataService;
+import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
+import dk.osl.intelligentbil.testretro.User;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText usernameEt, passwordEt;
     private Button loginBtn;
     private static final String TAG = "LoginAkt";
+    boolean result;
+    GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +47,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onResume() {
-
-        super.onResume();
-
-        new JSONAsyncTask().execute();
-
-    }
-    @Override
     public void onClick(View view) {
         Log.d(TAG, "onClick: login clicked");
 
         if(view == loginBtn){
            if(validateInput()){
-               login();
+               loginRequest();
            }
 
         }
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         boolean isValid = true;
 
         String username = usernameEt.getText().toString();
-        String password = usernameEt.getText().toString();
+        String password = passwordEt.getText().toString();
 
         //validate for empty input
         if(username.isEmpty() || password.isEmpty()){
@@ -78,91 +79,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    public void login(){
 
-        String username = usernameEt.getText().toString();
-        String password = usernameEt.getText().toString();
+    public void loginRequest(){
+        //get from input fields
+        final String username = usernameEt.getText().toString();
+        String password = passwordEt.getText().toString();
 
-        Intent i = new Intent(this,MainActivity.class);
-        i.putExtra("name",username);
-        startActivity(i);
-
-
-    }
-
-
-    class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected Boolean doInBackground(String... urls) {
-
-                String URLadresse = "N/a";
-                int userid = 0;
-
-                // get all trips from user
-//          {
-//            "date": "0"
-//            "lenght": "0"
-//            "effect": "0"
-//            "name": "work"
-//            "userid": "0"
-//            "message": "trip created"
-//        }
-                try {
-                    URL url = new URL("https://api.dc01.gamelockerapp.com/shards/eu/players?filter[playerNames]=iPatrick");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setRequestProperty("Accept", "application/json");
-                    conn.setRequestProperty("Authorization", "Bearer " +
-                            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjNzBkY2Y2MC0yYWMw" +
-                            "LTAxMzYtZjc5Ni0wYTU4NjQ2MTIzMDUiLCJpc3MiOiJnYW1lbG9ja2VyIiwiaWF0IjoxNTI" +
-                            "0NjY1NjIwLCJwdWIiOiJzZW1jIiwidGl0bGUiOiJ2YWluZ2xvcnkiLCJhcHAiOiJnbG9yeXN0Y" +
-                            "XRkZGQiLCJzY29wZSI6ImNvbW11bml0eSIsImxpbWl0IjoxMH0.F2bUydBWf7DtbqL-KEbSY" +
-                            "36kkcndNr7z9fJzLPfwSjk");
-
-                    if (conn.getResponseCode() != 200) {
-
-                        throw new RuntimeException("Failed"
-                                + conn.getResponseCode());
-                    }
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            (conn.getInputStream())));
-
-                    String output;
-                    while ((output = br.readLine()) != null) {
-                        System.out.println("output" + output);
-                    }
-
-                    conn.disconnect();
-
-                } catch (MalformedURLException e) {
-
-                    e.printStackTrace();
-
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-
+        Call<User> call = service.savePost(username, password);
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                Log.d(TAG, "onResponse: "+ response.body());
+                if(response.body()!=null){
+                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                    i.putExtra("name",username);
+                    startActivity(i);
                 }
-
-
-            return true;
-        }
-
-        protected void onPostExecute(Boolean result) {
-
-        }
-
-
+            }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.d(TAG, "onFailure: ");
+            }
+        });
     }
+
     }

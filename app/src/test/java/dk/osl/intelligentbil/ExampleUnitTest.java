@@ -4,6 +4,8 @@ import android.util.Log;
 
 import org.junit.Test;
 
+import java.text.DecimalFormat;
+
 import static org.junit.Assert.*;
 
 /**
@@ -45,4 +47,16 @@ public class ExampleUnitTest {
             assertEquals(4, 2 + 2);
         }
     }
+
+    @Test
+    public void formatTest(){
+        DecimalFormat df = new DecimalFormat("#0.00");
+
+
+        Double avgspd = 20345.5667676;
+
+      String test =  df.format(avgspd);
+        System.out.println(test);
+    }
+
 }

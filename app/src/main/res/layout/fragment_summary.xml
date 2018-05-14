@@ -33,7 +33,7 @@
 
 
             <TextView
-                android:text=" gnm Hastighed"
+                android:text="gnm Hastighed"
                 android:padding="3dip" />
 
 
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp">
             <TextView
-                android:text=" gnm Effekt"
+                android:text="gnm Effekt"
                 android:padding="3dip" />
             <TextView
                 android:id="@+id/avgpow"
