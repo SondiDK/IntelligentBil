@@ -28,9 +28,6 @@ public class DataInterpreter {
 
         TYPE[] types = new TYPE[length - 1];
 
-
-
-
             for (int i = 1; i < newArray.length; i++) {
                 String currentMessage = newArray[i];
                 types[i - 1] = handleShit(currentMessage);

@@ -1,38 +1,45 @@
 package dk.osl.intelligentbil.testretro;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Drive {
-
-
-    @SerializedName("name")
-    private String name;
-
-    @SerializedName("")
-    private Double speedAverage;
-
-    @SerializedName("effect")
-    private Double powerAverage;
-
-    @SerializedName("length")
-    private Double distance;
-
-    @SerializedName("time_length")
-    private int duration;
+public class Trip {
 
     @SerializedName("date")
+    @Expose
     private String date;
 
+    @SerializedName("effect")
+    @Expose
+    private Double powerAverage;
 
-    public Drive(String name, Double speedAverage, Double powerAverage, Double distance, int duration, String date) {
-        this.name = name;
-        this.speedAverage = speedAverage;
+
+    @SerializedName("length")
+    @Expose
+    private Double distance;
+
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    /*
+    @SerializedName("")
+    @Expose
+    private Double speedAverage;
+*/
+
+    @SerializedName("time_length")
+    @Expose
+    private int duration;
+
+
+    public Trip(String date, Double powerAverage, Double distance, String name, int duration) {
+        this.date = date;
         this.powerAverage = powerAverage;
         this.distance = distance;
+        this.name = name;
         this.duration = duration;
-        this.date = date;
     }
-
 
     public String getName() {
         return name;
@@ -41,7 +48,7 @@ public class Drive {
     public void setName(String name) {
         this.name = name;
     }
-
+/*
     public Double getSpeedAverage() {
         return speedAverage;
     }
@@ -49,7 +56,7 @@ public class Drive {
     public void setSpeedAverage(Double speedAverage) {
         this.speedAverage = speedAverage;
     }
-
+*/
     public Double getPowerAverage() {
         return powerAverage;
     }
@@ -84,9 +91,9 @@ public class Drive {
 
     @Override
     public String toString() {
-        return "Drive{" +
+        return "Trip{" +
                 "name='" + name + '\'' +
-                ", speedAverage=" + speedAverage +
+              //  ", speedAverage=" + speedAverage +
                 ", powerAverage=" + powerAverage +
                 ", distance=" + distance +
                 ", duration=" + duration +

@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.macroyau.blue2serial.BluetoothDeviceListDialog;
 import com.macroyau.blue2serial.BluetoothSerial;
 import com.macroyau.blue2serial.BluetoothSerialListener;
 
 import java.util.List;
+
+import dk.osl.intelligentbil.testretro.User;
 
 public class MainActivity extends AppCompatActivity implements IDataCommunication,
         BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,
@@ -20,9 +23,10 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
     List<Integer> speedList,effectList;
     private int duration;
+    private int distance;
     private String x;
     BTSerial bluetoothSerial;
-
+    User us;
     TextView userEt;
     Button testbtn, send;
     private final static  String TAG =  "MainActivity";
@@ -35,8 +39,12 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
 
 
         Bundle extras = getIntent().getExtras();
+        Gson gson = new Gson();
         userEt.setText("Velkommen");
-
+        String strObj = getIntent().getStringExtra("usr");
+        User user = gson.fromJson(strObj, User.class);
+        us = user;
+        Log.d(TAG, "onCreate: " +us.getUserID());
         //todo decide if this is approach
         setTitle(getTitle()+": "+extras.getString("name"));
         setupFragment();
@@ -83,12 +91,12 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     ft.commit();
     }
     @Override
-    public void setMyVariableX(String x) {
+    public void setTripName(String x) {
         this.x = x;
 
     }
     @Override
-    public String getMyVariableX(){
+    public String getTripName(){
         return x;
     }
 
@@ -103,6 +111,16 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     }
 
     @Override
+    public User getUser() {
+        return us;
+    }
+
+    @Override
+    public void setUser(User u) {
+        us = u;
+    }
+
+    @Override
     public int getDuration() {
         return duration;
     }
@@ -110,6 +128,16 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     @Override
     public void setDuration(int duration) {
     this.duration = duration;
+    }
+
+    @Override
+    public void setDistance(int distance) {
+this.distance = distance;
+    }
+
+    @Override
+    public int getDistance() {
+        return distance;
     }
 
     @Override

@@ -4,9 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +77,7 @@ public void startDriveFragment(){
     //ft.addToBackStack(null);
 
     //dette sætter variablen i mainack, dvs turens navn. bagefter kan jeg hente denne værdi i de andre fragmenter
-    mCallback.setMyVariableX(driveName.getText().toString());
+    mCallback.setTripName(driveName.getText().toString());
 
 
 // Complete the changes added above

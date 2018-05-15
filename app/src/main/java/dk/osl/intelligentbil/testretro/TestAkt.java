@@ -1,6 +1,5 @@
 package dk.osl.intelligentbil.testretro;
 
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,9 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import dk.osl.intelligentbil.R;
-import dk.osl.intelligentbil.testretro.DataObject;
-import dk.osl.intelligentbil.testretro.GetDataService;
-import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,10 +23,8 @@ public class TestAkt extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_akt);
-
-
     //loginTest();
-  getPosts();
+        getPosts();
 
 
     }
@@ -60,23 +54,23 @@ public class TestAkt extends AppCompatActivity {
     public void getPosts(){
 
 
-        Call<List<Drive>> call = service.getAllDrives("5af998d052acbf06be3876cb");
-        call.enqueue(new Callback<List<Drive>>() {
+        Call<List<Trip>> call = service.getAllDrives("5af998d052acbf06be3876cb");
+        call.enqueue(new Callback<List<Trip>>() {
             @Override
-            public void onResponse(Call<List<Drive>> call, Response<List<Drive>> response) {
+            public void onResponse(Call<List<Trip>> call, Response<List<Trip>> response) {
                 printUsers(response.body());
             }
 
             @Override
-            public void onFailure(Call<List<Drive>> call, Throwable t) {
+            public void onFailure(Call<List<Trip>> call, Throwable t) {
                 Log.e(TAG, "onFailure: " );
             }
         });
     }
 
-    private void printUsers(List<Drive> body) {
+    private void printUsers(List<Trip> body) {
 
-        for (Drive d: body) {
+        for (Trip d: body) {
 
             Log.d(TAG, "printUsers: " + d.toString());
 
@@ -85,12 +79,9 @@ public class TestAkt extends AppCompatActivity {
 
     }
 
-public void date(){
-    DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-    Date today = Calendar.getInstance().getTime();
-    String reportDate = df.format(today);
-    System.out.println("Report Date: " + reportDate);
-}
+
+
+
 }
 
 

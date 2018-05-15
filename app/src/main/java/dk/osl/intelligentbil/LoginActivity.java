@@ -1,7 +1,7 @@
 package dk.osl.intelligentbil;
 
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +10,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
+import java.lang.reflect.Type;
+
+import dk.osl.intelligentbil.testretro.Trip;
 import dk.osl.intelligentbil.testretro.GetDataService;
 import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
 import dk.osl.intelligentbil.testretro.User;
@@ -29,21 +28,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText usernameEt, passwordEt;
     private Button loginBtn;
     private static final String TAG = "LoginAkt";
-    boolean result;
+
+    User us;
     GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        us = new User();
         usernameEt = (EditText) findViewById(R.id.usrnametxt);
         passwordEt = (EditText) findViewById(R.id.pwdtxt);
 
         loginBtn = (Button) findViewById(R.id.loginbtn);
         loginBtn.setOnClickListener(this);
 
-
+        usernameEt.setText("Klaus");
+        passwordEt.setText("flagstang");
     }
 
     @Override
@@ -82,18 +86,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void loginRequest(){
         //get from input fields
-        final String username = usernameEt.getText().toString();
+       final  String username = usernameEt.getText().toString();
         String password = passwordEt.getText().toString();
 
         Call<User> call = service.savePost(username, password);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                Log.d(TAG, "onResponse: "+ response.body());
+
                 if(response.body()!=null){
+                   Log.d(TAG, "onResponse: Token " +  response.body().getToken());
+                    Log.d(TAG, "onResponse UserID: " +us.getUserID());
+                    us.setUserID(response.body().getUserID());
+                    us.setToken(response.body().getToken());
+
+
                     Intent i = new Intent(getApplicationContext(),MainActivity.class);
                     i.putExtra("name",username);
+                    Gson gson = new Gson();
+
+                    i.putExtra("usr", gson.toJson(us));
                     startActivity(i);
+
+                   // testCreateTrip();
                 }
             }
             @Override
@@ -102,5 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
+
 
     }

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -21,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static dk.osl.intelligentbil.DataInterpreter.TYPE.UNKNOWN;
-
 
 /**
  * Created by Oliver on 04-03-2018.
@@ -38,7 +35,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     DataInterpreter dt;
 
     boolean isStart = true;
-    int startDist;
+    int startDist, endDist;
 
     private Chronometer chronometer;
     @Override
@@ -61,9 +58,6 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
 
-
-
-
         spdView = view.findViewById(R.id.speedView);
         efview = view.findViewById(R.id.effectview);
         dview = view.findViewById(R.id.distanceview);
@@ -74,7 +68,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     textview = getActivity().findViewById(R.id.headline);
 
     //sætter overskriften fra mainakt til at være overskrift på turen.
-    textview.setText(mCallback.getMyVariableX());
+    textview.setText("Trip to: "  + mCallback.getTripName());
 
     //sender "data" og ber om data
     mCallback.startListening();
@@ -100,10 +94,8 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                        if(!(newSpeed.length()<3)){
                        int svalue = dt.convertFromHex(newSpeed);
                        Log.d(TAG, "FROM DISTFRAG: SPEED:" + svalue);
-
                          speedList.add(svalue);
                          spdView.setText(Integer.toString(svalue) + "km/h");
-
 
                        }
                        break;
@@ -127,8 +119,8 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                            }
                            Log.d(TAG, "FROM DISTFRAG: dist:" + value);
                            //distList.add(value);
-                               int result = value-startDist;
-                               dview.setText(Integer.toString(result));
+                               endDist = value-startDist;
+                               dview.setText(Integer.toString(endDist));
                            }                       }
 
                                           break;
@@ -151,11 +143,12 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
              } else {
                  builder = new AlertDialog.Builder(getContext());
              }
-             builder.setTitle("End Drive")
+             builder.setTitle("End Trip")
                      .setMessage("Are you sure you want to end your drive?")
                      .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                          public void onClick(DialogInterface dialog, int which) {
                              mCallback.stopListening();
+                             mCallback.setDistance(endDist);
                              updateLists();
                              stopTimer();
                              startSumFrag();
