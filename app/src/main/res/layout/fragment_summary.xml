@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="dk.osl.intelligentbil.SummaryFragment">
+    tools:context="dk.osl.intelligentbil.Fragments.SummaryFragment">
 
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
@@ -110,7 +110,7 @@
                 android:padding="3dip"
                 android:text="Upload:" />
             <TextView
-                android:id="@+id/status"
+                android:id="@+id/upstatus"
                 android:text="value status"
                 android:gravity="right"
                 android:padding="3dip" />

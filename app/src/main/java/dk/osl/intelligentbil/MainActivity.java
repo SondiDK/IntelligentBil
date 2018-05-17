@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.macroyau.blue2serial.BluetoothDeviceListDialog;
@@ -15,6 +16,8 @@ import com.macroyau.blue2serial.BluetoothSerialListener;
 
 import java.util.List;
 
+import dk.osl.intelligentbil.Fragments.DriveFragment;
+import dk.osl.intelligentbil.Fragments.SetupFragment;
 import dk.osl.intelligentbil.testretro.User;
 
 public class MainActivity extends AppCompatActivity implements IDataCommunication,
@@ -74,7 +77,11 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
             dialog.showAddress(true);
             dialog.show();
         }
-        else Log.d(TAG, "showDeviceListDialog: CONNECT BT");
+        else{
+
+            Log.d(TAG, "showDeviceListDialog: CONNECT BT");
+            Toast.makeText(this,"Turn on Bluetooth", Toast.LENGTH_SHORT).show();
+        }
     }
     public void setupFragment(){
 
@@ -84,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     // Replace the contents of the container with the new fragment
     ft.replace(R.id.placeholder, fragment);
     // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
-    // ft.addToBackStack(null);
+    //ft.addToBackStack(null);
 
     ft.commit();
     }
@@ -236,7 +243,10 @@ this.distance = distance;
     }
     @Override
 public boolean isConnected(){
-       return bluetoothSerial.isConnected();
+        if(bluetoothSerial.isBluetoothEnabled()){
+            return bluetoothSerial.isConnected();
+        }
+    else return false;
 }
 
     @Override

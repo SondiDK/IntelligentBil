@@ -1,7 +1,5 @@
 package dk.osl.intelligentbil;
 
-import android.util.Log;
-
 import org.junit.Test;
 
 import java.text.DecimalFormat;
@@ -21,7 +19,7 @@ public class ExampleUnitTest {
         String test = "00ff51";
 
 
-        DataInterpreter.TYPE[] a = d.divideShit(test);
+        DataInterpreter.TYPE[] a = d.divideMessage(test);
 
         String[] splittedArray = d.newArray;
         System.out.println("split arrau" + splittedArray.length);

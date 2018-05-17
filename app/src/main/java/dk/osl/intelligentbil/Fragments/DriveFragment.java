@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Fragments;
 
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
@@ -19,6 +19,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import dk.osl.intelligentbil.DataInterpreter;
+import dk.osl.intelligentbil.IDataCommunication;
+import dk.osl.intelligentbil.R;
 
 
 /**
@@ -74,10 +78,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         int messageLength = message.length();
         Log.d(TAG, "DRIVEFRAG: Data full message: " + message + " Length: " + messageLength);
 
-       DataInterpreter.TYPE[] types = dt.divideShit(message);
+       DataInterpreter.TYPE[] types = dt.divideMessage(message);
 
        if( types!= null) {
-           String[] splittedArray = dt.newArray;
+           String[] splittedArray = dt.getSplittedArray();
             //starter på 1 fordi, jeg splitter
            for (int i = 1; i < splittedArray.length; i++) {
                switch (types[i - 1]) {
@@ -90,7 +94,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                        int svalue = dt.convertFromHex(newSpeed);
                        Log.d(TAG, "FROM DISTFRAG: SPEED:" + svalue);
                          speedList.add(svalue);
-                         spdView.setText(Integer.toString(svalue) + "km/h");
+                         spdView.setText(Integer.toString(svalue) + " km/h");
 
                        }
                        break;
@@ -100,7 +104,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                            int value = dt.convertFromHex(newefkt);
                            Log.d(TAG, "FROM DISTFRAG: effect:" + value);
                            effectList.add(value);
-                           efview.setText(Integer.toString(value) + "W");
+                           efview.setText(Integer.toString(value) + " W");
                            }
                        break;
                    case DISTANCE:
@@ -116,7 +120,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
                            Log.d(TAG, "FROM DISTFRAG: dist:" + value);
                             endDist = value-startDist;
-                            dview.setText(Integer.toString(endDist));
+                            dview.setText(Integer.toString(endDist) + " km");
                            }
                }
 
@@ -179,6 +183,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
 
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.placeholder, new SummaryFragment());
+        ft.addToBackStack(null);
          ft.commit();
     }
 
@@ -188,11 +193,11 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         System.out.println("EFECT LIST LENGTH" +  effectList.size());
 
         for(int a:speedList){
-            System.out.println("LIST" +a);
-              }
+            System.out.println("Speedlist: " + a);
+        }
 
         for(int b:effectList){
-            System.out.println("LIST" +b);
+            System.out.println("Effectlist: " + b);
         }
 
         mCallback.setEffectList(effectList);

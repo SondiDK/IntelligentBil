@@ -1,10 +1,9 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Fragments;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +17,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import dk.osl.intelligentbil.IDataCommunication;
+import dk.osl.intelligentbil.R;
 import dk.osl.intelligentbil.testretro.GetDataService;
 import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
 import dk.osl.intelligentbil.testretro.Trip;
@@ -36,7 +37,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
     Trip drive;
     User currentUser;
    DecimalFormat df = new DecimalFormat("#0.00");
-   boolean testData;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -55,7 +56,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         averagePower = view.findViewById(R.id.avgpow);
         duration = view.findViewById(R.id.duration);
         totalDistance = view.findViewById(R.id.totaldist);
-        uploadStatus = view.findViewById(R.id.status);
+        uploadStatus = view.findViewById(R.id.upstatus);
 
 
         getLists();
@@ -79,20 +80,21 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
     }
 
     public void uploadDrive(){
-        if(!testData) {
+
             Call<Trip> call = service.saveTrip(drive.getDate(), drive.getPowerAverage(), drive.getDistance(),
                     drive.getName(), currentUser.getUserID(), drive.getDuration(),
                     "Bearer " + currentUser.getToken());
-        }
-            Call<Trip> call = service.saveTrip("Today", 450.5, 20, "jagt",
-                    "e34", 5, "Bearer " + currentUser.getToken());
 
         call.enqueue(new Callback<Trip>() {
             @Override
             public void onResponse(Call<Trip> call, Response<Trip> response) {
-                Log.d(" ", "onResponse: status" + response.raw());
+                String msg = response.message();
+                Log.d(" ", "onResponse: status" + msg);
                 Log.d("", "onResponse: body " + response.body());
-                uploadStatus.setText(response.code());
+
+                if(msg!=null) {
+                    uploadStatus.setText(response.message());
+                }
             }
 
             @Override

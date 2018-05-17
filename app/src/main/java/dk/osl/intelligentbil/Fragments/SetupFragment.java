@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -12,25 +12,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import dk.osl.intelligentbil.IDataCommunication;
+import dk.osl.intelligentbil.MainActivity;
+import dk.osl.intelligentbil.R;
+
 /**
  * Created by Oliver on 26-02-2018.
  */
 
 public class SetupFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = "Setupfrag";
+    private static final String TAG = "Setupfragment";
     private Button startButton,connectButton;
     private EditText driveName;
     private IDataCommunication mCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        // Defines the xml file for the fragment
-        return inflater.inflate(R.layout.fragment_setup, null);
+             return inflater.inflate(R.layout.fragment_setup, null);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // Setup any handles to view objects here
         startButton = view.findViewById(R.id.startButton);
         connectButton = view.findViewById(R.id.cntbtn);
         driveName = view.findViewById(R.id.turNavn);
@@ -47,7 +49,9 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         Log.d(TAG, "onClick: ");
         if (view == startButton ) {
-            if(mCallback.isConnected()) startDriveFragment();
+            if(mCallback.isConnected()){
+                startDriveFragment();
+            }
             else Toast.makeText(getContext(),"Connect to device", Toast.LENGTH_SHORT).show();
         }
         if(view == connectButton){
@@ -58,11 +62,11 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
     }
 
 public void startDriveFragment(){
-    // Begin the transaction
+
     android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-    // Replace the contents of the container with the new fragment
+
     ft.replace(R.id.placeholder,new DriveFragment(),"driveFrag");
-    //ft.addToBackStack(null);
+    ft.addToBackStack(null);
 
     //dette sætter variablen i mainack, dvs turens navn. bagefter kan jeg hente denne værdi i de andre fragmenter
     mCallback.setTripName(driveName.getText().toString());
