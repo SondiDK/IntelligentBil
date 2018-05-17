@@ -19,6 +19,7 @@ import java.util.Set;
  * Create an instance of this class in your Android application to use the Blue2Serial library. BluetoothSerial creates a Bluetooth serial port using the Serial Port Profile (SPP) and manages its lifecycle.
  *
  * @author Macro Yau
+ * Edits by Oliver
  */
 public class BTSerial {
 

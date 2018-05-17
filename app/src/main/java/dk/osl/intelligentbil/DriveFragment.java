@@ -28,14 +28,13 @@ import java.util.concurrent.TimeUnit;
 public class DriveFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "DRIVEfrag";
-    List<Integer> speedList,effectList, distList;
-    TextView textview, spdView, efview, dview;
-    IDataCommunication mCallback;
-    Button endButton;
-    DataInterpreter dt;
-
-    boolean isStart = true;
-    int startDist, endDist;
+    private  List<Integer> speedList,effectList, distList;
+    private TextView textview, spdView, efview, dview;
+    private IDataCommunication mCallback;
+    private Button endButton;
+    private DataInterpreter dt;
+    private boolean isStart = true;
+    private int startDist, endDist;
 
     private Chronometer chronometer;
     @Override
@@ -49,7 +48,6 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         dt = new DataInterpreter();
-
         speedList =  new ArrayList<>();
         effectList =  new ArrayList<>();
         distList =  new ArrayList<>();
@@ -62,28 +60,25 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         efview = view.findViewById(R.id.effectview);
         dview = view.findViewById(R.id.distanceview);
 
-    endButton = getActivity().findViewById(R.id.endButton);
-    endButton.setOnClickListener(this);
+        endButton = getActivity().findViewById(R.id.endButton);
+        endButton.setOnClickListener(this);
+        textview = getActivity().findViewById(R.id.headline);
 
-    textview = getActivity().findViewById(R.id.headline);
-
-    //sætter overskriften fra mainakt til at være overskrift på turen.
-    textview.setText("Trip to: "  + mCallback.getTripName());
-
-    //sender "data" og ber om data
-    mCallback.startListening();
-
+        //sætter overskriften fra mainakt til at være overskrift på turen.
+        textview.setText("Trip to: "  + mCallback.getTripName());
+        //sender "data" og ber om data
+        mCallback.startListening();
     }
 
     public void updateView(String message){
-
         int messageLength = message.length();
         Log.d(TAG, "DRIVEFRAG: Data full message: " + message + " Length: " + messageLength);
 
        DataInterpreter.TYPE[] types = dt.divideShit(message);
+
        if( types!= null) {
            String[] splittedArray = dt.newArray;
-
+            //starter på 1 fordi, jeg splitter
            for (int i = 1; i < splittedArray.length; i++) {
                switch (types[i - 1]) {
                    case UNKNOWN:
@@ -106,24 +101,26 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
                            Log.d(TAG, "FROM DISTFRAG: effect:" + value);
                            effectList.add(value);
                            efview.setText(Integer.toString(value) + "W");
-                                                  }
+                           }
                        break;
                    case DISTANCE:
                        String newdist = splittedArray[i].substring(2, splittedArray[i].length());
                        Log.d(TAG, "FROM DISTFRAG: dist:" + newdist);
+
                        if(!(newdist.length()<3)) {
                            int value = dt.convertFromHex(newdist);
                            if(isStart) {
                                isStart = false;
                                startDist = value;
                            }
-                           Log.d(TAG, "FROM DISTFRAG: dist:" + value);
-                           //distList.add(value);
-                               endDist = value-startDist;
-                               dview.setText(Integer.toString(endDist));
-                           }                       }
 
-                                          break;
+                           Log.d(TAG, "FROM DISTFRAG: dist:" + value);
+                            endDist = value-startDist;
+                            dview.setText(Integer.toString(endDist));
+                           }
+               }
+
+               break;
                }
            }
        }
@@ -168,12 +165,10 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
             mCallback = (IDataCommunication) context;
-
 
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
@@ -192,9 +187,9 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         System.out.println("SPEED LIST LENGTH" +  speedList.size());
         System.out.println("EFECT LIST LENGTH" +  effectList.size());
 
-           for(int a:speedList){
-              System.out.println("LIST" +a);
-                           }
+        for(int a:speedList){
+            System.out.println("LIST" +a);
+              }
 
         for(int b:effectList){
             System.out.println("LIST" +b);
@@ -209,7 +204,7 @@ public class DriveFragment extends Fragment implements View.OnClickListener {
         long timeWhenStopped = SystemClock.elapsedRealtime()-chronometer.getBase();
         Log.d(TAG, "stopTimer: Mili " + timeWhenStopped);
 
-        //taget kun hele minutter
+        //tager kun hele minutter
         int toMin = (int) TimeUnit.MILLISECONDS.toMinutes(timeWhenStopped);
         Log.d(TAG, "stopTimer: " + toMin);
 

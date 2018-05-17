@@ -21,35 +21,37 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
         BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,
         View.OnClickListener {
 
-    List<Integer> speedList,effectList;
+    private final static  String TAG =  "MainActivity";
+   private List<Integer> speedList,effectList;
     private int duration;
     private int distance;
-    private String x;
-    BTSerial bluetoothSerial;
-    User us;
-    TextView userEt;
-    Button testbtn, send;
-    private final static  String TAG =  "MainActivity";
+    private String tripName;
+   private BTSerial bluetoothSerial;
+    private  User us;
+   private TextView userEt;
+ private  Button testbtn, send;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //init bluetooth forbindelses objekt
+        bluetoothSerial = new BTSerial(this, this);
+
         userEt = findViewById(R.id.headline);
+        userEt.setText("Velkommen");
 
-
+        //få data fra anden aktivitet
         Bundle extras = getIntent().getExtras();
         Gson gson = new Gson();
-        userEt.setText("Velkommen");
         String strObj = getIntent().getStringExtra("usr");
         User user = gson.fromJson(strObj, User.class);
         us = user;
-        Log.d(TAG, "onCreate: " +us.getUserID());
+
         //todo decide if this is approach
         setTitle(getTitle()+": "+extras.getString("name"));
         setupFragment();
-
-        bluetoothSerial = new BTSerial(this, this);
 
     }
 
@@ -57,14 +59,12 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     protected void onStart() {
         Log.d(TAG, "onStart: ");
         super.onStart();
-
         // Check Bluetooth availability on the device and set up the Bluetooth adapter
         bluetoothSerial.setup();
 
     }
 
     public void showDeviceListDialog() {
-        
         if(bluetoothSerial.isBluetoothEnabled()) {
             // Display dialog for selecting a remote Bluetooth device
             BluetoothDeviceListDialog dialog = new BluetoothDeviceListDialog(this);
@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     }
     public void setupFragment(){
 
-    // Begin the transaction
     android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
     SetupFragment fragment = new SetupFragment();
 
@@ -87,17 +86,16 @@ public class MainActivity extends AppCompatActivity implements IDataCommunicatio
     // adder ikke til backstack fordi eller sgår den bare tilbage til tom view
     // ft.addToBackStack(null);
 
-    // Complete the changes added above
     ft.commit();
     }
     @Override
     public void setTripName(String x) {
-        this.x = x;
+        this.tripName = x;
 
     }
     @Override
     public String getTripName(){
-        return x;
+        return tripName;
     }
 
     @Override
@@ -153,7 +151,8 @@ this.distance = distance;
 
     @Override
     public void startListening() {
-        bluetoothSerial.write("stub", true);
+        //stub for test
+        bluetoothSerial.write("data", true);
     }
 
     @Override
@@ -181,13 +180,13 @@ this.distance = distance;
 
     @Override
     public void onBluetoothSerialRead(String message) {
-       // int messageLength = message.length();
-      //  Log.d(TAG, "onBluetoothSerialRead: Data full message: " + message + " Length: " + messageLength);
-        DriveFragment frag =(DriveFragment)getFragmentManager().findFragmentByTag("driveFrag");
-        boolean test= frag!=null;
 
-        if(test){
-           // System.out.println("hej");
+
+        //Update the fragment
+        DriveFragment frag =(DriveFragment)getFragmentManager().findFragmentByTag("driveFrag");
+        boolean fragmentExist= frag!=null;
+
+        if(fragmentExist){
             frag.updateView(message);
         }
 
@@ -202,40 +201,38 @@ this.distance = distance;
 
     @Override
     public void onClick(View view) {
-
         if(view == testbtn){
             showDeviceListDialog();
         }
-        if(view==send){
+        if(view == send){
             Log.d(TAG, "onClick: CALLED");
-
-
         }
     }
+
     public void updateBluetoothState() {
-        // Get the current Bluetooth state
+        //Få Bluetooth state
         final int state;
         if (bluetoothSerial != null)
             state = bluetoothSerial.getState();
         else
             state = BluetoothSerial.STATE_DISCONNECTED;
 
-        // Display the current state on the app bar as the subtitle
-        String subtitle;
+        // vis bluetooth state
+        String status;
         switch (state) {
             case BluetoothSerial.STATE_CONNECTING:
-                subtitle ="Connecting...";
+                status ="Connecting...";
                 break;
             case BluetoothSerial.STATE_CONNECTED:
-                subtitle ="Connected to" + bluetoothSerial.getConnectedDeviceName();
+                status ="Connected to" + bluetoothSerial.getConnectedDeviceName();
                 break;
             default:
-                subtitle = "Disconnected";
+                status = "Disconnected";
                 break;
         }
 
         TextView view = findViewById(R.id.connectstatus);
-        view.setText(subtitle);
+        view.setText(status);
     }
     @Override
 public boolean isConnected(){
@@ -244,7 +241,6 @@ public boolean isConnected(){
 
     @Override
     public void onBluetoothNotSupported() {
-
     }
 
     @Override

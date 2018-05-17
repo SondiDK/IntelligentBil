@@ -18,14 +18,9 @@ import android.widget.Toast;
 
 public class SetupFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "Setupfrag";
-    Button startButton,connectButton;
-    EditText driveName;
-    IDataCommunication mCallback;
-
-
-    //Todo Denne fragment viser basic setup. Den skal starte ny fragment der viser live data.
-
-
+    private Button startButton,connectButton;
+    private EditText driveName;
+    private IDataCommunication mCallback;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -33,8 +28,6 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
         return inflater.inflate(R.layout.fragment_setup, null);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         // Setup any handles to view objects here
@@ -44,23 +37,21 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 
         //gi underline til connect button
         connectButton.setPaintFlags(connectButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
         //klikkers
         connectButton.setOnClickListener(this);
-
         startButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-
-//todo skal ikke kunne stare frag, hvis ingen forbindelse
         Log.d(TAG, "onClick: ");
         if (view == startButton ) {
             if(mCallback.isConnected()) startDriveFragment();
             else Toast.makeText(getContext(),"Connect to device", Toast.LENGTH_SHORT).show();
         }
-        if(view== connectButton){
-
+        if(view == connectButton){
+                //vis dialog over devices
             ((MainActivity)getActivity()).showDeviceListDialog();
         }
 
@@ -69,24 +60,17 @@ public class SetupFragment extends Fragment implements View.OnClickListener {
 public void startDriveFragment(){
     // Begin the transaction
     android.app.FragmentTransaction ft = getFragmentManager().beginTransaction();
-
-
     // Replace the contents of the container with the new fragment
     ft.replace(R.id.placeholder,new DriveFragment(),"driveFrag");
-
     //ft.addToBackStack(null);
 
     //dette sætter variablen i mainack, dvs turens navn. bagefter kan jeg hente denne værdi i de andre fragmenter
     mCallback.setTripName(driveName.getText().toString());
-
-
-// Complete the changes added above
     ft.commit();
 }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {

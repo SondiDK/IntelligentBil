@@ -4,10 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import dk.osl.intelligentbil.R;
@@ -37,7 +33,7 @@ public class TestAkt extends AppCompatActivity {
 
     public void loginTest(){
 
-        Call<User> call = service.savePost("Klaus", "flagstang");
+        Call<User> call = service.login("Klaus", "flagstang");
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

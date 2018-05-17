@@ -29,13 +29,14 @@ import retrofit2.Response;
 
 public class SummaryFragment extends Fragment implements View.OnClickListener {
     GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
-    TextView textview, averageSpeed, averagePower, totalDistance, duration;
+    TextView textview, averageSpeed, averagePower, totalDistance, duration, uploadStatus;
     IDataCommunication mCallback;
     Button bckButton;
     List<Integer> speedList, effectList;
     Trip drive;
     User currentUser;
    DecimalFormat df = new DecimalFormat("#0.00");
+   boolean testData;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -54,6 +55,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         averagePower = view.findViewById(R.id.avgpow);
         duration = view.findViewById(R.id.duration);
         totalDistance = view.findViewById(R.id.totaldist);
+        uploadStatus = view.findViewById(R.id.status);
 
 
         getLists();
@@ -69,7 +71,7 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         totalDistance.setText(mCallback.getDistance() + " km/h");
         duration.setText(Integer.toString(mCallback.getDuration()) + " min");
 
-        drive = new Trip(getDate(),avgpow,4.5 , tripName,durationInMinutes);
+        drive = new Trip(getDate(),avgpow,mCallback.getDistance() , tripName,durationInMinutes);
         uploadDrive();
         bckButton = view.findViewById(R.id.sumButton);
         bckButton.setOnClickListener(this);
@@ -77,16 +79,20 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
     }
 
     public void uploadDrive(){
-        Call<Trip> call = service.saveTrip(drive.getDate(),drive.getPowerAverage(),drive.getDistance(),
-                drive.getName(),currentUser.getUserID(),drive.getDuration(),
-                "Bearer " + currentUser.getToken());
-
+        if(!testData) {
+            Call<Trip> call = service.saveTrip(drive.getDate(), drive.getPowerAverage(), drive.getDistance(),
+                    drive.getName(), currentUser.getUserID(), drive.getDuration(),
+                    "Bearer " + currentUser.getToken());
+        }
+            Call<Trip> call = service.saveTrip("Today", 450.5, 20, "jagt",
+                    "e34", 5, "Bearer " + currentUser.getToken());
 
         call.enqueue(new Callback<Trip>() {
             @Override
             public void onResponse(Call<Trip> call, Response<Trip> response) {
                 Log.d(" ", "onResponse: status" + response.raw());
                 Log.d("", "onResponse: body " + response.body());
+                uploadStatus.setText(response.code());
             }
 
             @Override

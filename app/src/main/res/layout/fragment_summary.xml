@@ -40,7 +40,7 @@
 
             <TextView
                 android:id="@+id/avgspd"
-                android:text="value"
+                android:text="value kmt"
                 android:padding="3dip"
                 android:gravity="right"
                 />
@@ -58,7 +58,7 @@
                 android:text="Average Power" />
             <TextView
                 android:id="@+id/avgpow"
-                android:text="value"
+                android:text="value w"
                 android:gravity="right"
                 android:padding="3dip" />
         </TableRow>
@@ -95,6 +95,23 @@
             <TextView
                 android:id="@+id/duration"
                 android:text="value min"
+                android:gravity="right"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow
+            android:id="@+id/sum6Row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            >
+
+            <TextView
+                android:textColor="@android:color/black"
+                android:padding="3dip"
+                android:text="Upload:" />
+            <TextView
+                android:id="@+id/status"
+                android:text="value status"
                 android:gravity="right"
                 android:padding="3dip" />
         </TableRow>

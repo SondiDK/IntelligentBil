@@ -1,7 +1,6 @@
 package dk.osl.intelligentbil;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.io.Serializable;
-import java.lang.reflect.Type;
-
-import dk.osl.intelligentbil.testretro.Trip;
 import dk.osl.intelligentbil.testretro.GetDataService;
 import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
 import dk.osl.intelligentbil.testretro.User;
@@ -25,11 +19,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = "LoginAkt";
     private EditText usernameEt, passwordEt;
     private Button loginBtn;
-    private static final String TAG = "LoginAkt";
+    private User us;
 
-    User us;
+    // Få API klient klar.
     GetDataService service = RetrofitClientInstance.getRetrofitInstance().create(GetDataService.class);
 
 
@@ -46,6 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginBtn = (Button) findViewById(R.id.loginbtn);
         loginBtn.setOnClickListener(this);
 
+        //Todo remove when done
         usernameEt.setText("Klaus");
         passwordEt.setText("flagstang");
     }
@@ -62,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
-
+    //Metode til at tjekke, at der ikke er empty tekt
     private boolean validateInput() {
         Log.d(TAG, "validateInput: called");
         boolean isValid = true;
@@ -75,11 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(TAG, "validateInput: empty");
             Toast.makeText(getBaseContext(),"Enter both fields", Toast.LENGTH_SHORT).show();
         }
-
-
-
         return isValid;
-
     }
 
 
@@ -89,26 +81,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
        final  String username = usernameEt.getText().toString();
         String password = passwordEt.getText().toString();
 
-        Call<User> call = service.savePost(username, password);
+
+        Call<User> call = service.login(username, password);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
 
                 if(response.body()!=null){
                    Log.d(TAG, "onResponse: Token " +  response.body().getToken());
-                    Log.d(TAG, "onResponse UserID: " +us.getUserID());
+                    Log.d(TAG, "onResponse UserID: " + us.getUserID());
+
+                   // gem userdata
                     us.setUserID(response.body().getUserID());
                     us.setToken(response.body().getToken());
 
-
                     Intent i = new Intent(getApplicationContext(),MainActivity.class);
-                    i.putExtra("name",username);
                     Gson gson = new Gson();
-
+                    //Sender username og user objekt med
+                    //todo fix så username bliver sat i user objektet
+                    i.putExtra("name",username);
                     i.putExtra("usr", gson.toJson(us));
                     startActivity(i);
 
-                   // testCreateTrip();
                 }
             }
             @Override

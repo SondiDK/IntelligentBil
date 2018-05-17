@@ -22,35 +22,28 @@ public interface GetDataService {
 
     @POST("/users/login")
     @FormUrlEncoded
-    Call<User> savePost(@Field("name") String username,
-                        @Field("password") String password);
-
+    Call<User> login(@Field("name") String username,
+                     @Field("password") String password);
 
 
     @GET("/trip/{userId}")
     Call<List<Trip>> getAllDrives(@Path("userId") String userId);
 
-
-/*
-    @POST("/trip/createtrip")
-      Call<Trip>saveTrip(@Body Trip d,
-                        @Part("userid") String userid,
-                        @Header("Authorization") String authHeader);
-*/
-
-
-
-
-
     @POST("/trip/createtrip")
     @FormUrlEncoded
     Call<Trip>saveTrip(@Field("date") String date,
                        @Field("effect") Double powerAverage,
-                       @Field("length") Double distance,
+                       @Field("length") int distance,
                        @Field("name") String name,
                        @Field("userid") String userid,
                        @Field("time_length") int duration,
                        @Header("Authorization") String authHeader);
+    /*
+    @POST("/trip/createtrip")
+      Call<Trip>saveTrip(@Body Trip d,
+                        @Part("userid") String userid,
+                        @Header("Authorization") String authHeader);
+       */
 
 
 }

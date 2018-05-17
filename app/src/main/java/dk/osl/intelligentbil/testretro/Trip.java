@@ -16,14 +16,14 @@ public class Trip {
 
     @SerializedName("length")
     @Expose
-    private Double distance;
+    private int distance;
 
     @SerializedName("name")
     @Expose
     private String name;
 
     /*
-    @SerializedName("")
+    @SerializedName("speed")
     @Expose
     private Double speedAverage;
 */
@@ -33,7 +33,7 @@ public class Trip {
     private int duration;
 
 
-    public Trip(String date, Double powerAverage, Double distance, String name, int duration) {
+    public Trip(String date, Double powerAverage, int distance, String name, int duration) {
         this.date = date;
         this.powerAverage = powerAverage;
         this.distance = distance;
@@ -65,11 +65,11 @@ public class Trip {
         this.powerAverage = powerAverage;
     }
 
-    public Double getDistance() {
+    public int getDistance() {
         return distance;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
