@@ -2,7 +2,7 @@ package dk.osl.intelligentbil;
 
 import java.util.List;
 
-import dk.osl.intelligentbil.testretro.User;
+import dk.osl.intelligentbil.Model.User;
 
 /**
  * Created by Oliver on 04-03-2018.

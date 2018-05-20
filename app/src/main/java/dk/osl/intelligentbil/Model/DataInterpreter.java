@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Model;
 
 import android.util.Log;
 

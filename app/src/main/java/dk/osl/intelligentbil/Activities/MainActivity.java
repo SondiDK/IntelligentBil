@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Activities;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
@@ -18,7 +18,10 @@ import java.util.List;
 
 import dk.osl.intelligentbil.Fragments.DriveFragment;
 import dk.osl.intelligentbil.Fragments.SetupFragment;
-import dk.osl.intelligentbil.testretro.User;
+import dk.osl.intelligentbil.IDataCommunication;
+import dk.osl.intelligentbil.Model.BTSerial;
+import dk.osl.intelligentbil.Model.User;
+import dk.osl.intelligentbil.R;
 
 public class MainActivity extends AppCompatActivity implements IDataCommunication,
         BluetoothSerialListener, BluetoothDeviceListDialog.OnDeviceSelectedListener,

@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil.testretro;
+package dk.osl.intelligentbil.Retrofit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import dk.osl.intelligentbil.Model.Trip;
+import dk.osl.intelligentbil.Model.User;
 import dk.osl.intelligentbil.R;
 import retrofit2.Call;
 import retrofit2.Callback;

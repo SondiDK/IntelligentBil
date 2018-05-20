@@ -1,17 +1,16 @@
-package dk.osl.intelligentbil.testretro;
+package dk.osl.intelligentbil.Retrofit;
 
 import java.util.List;
 
+import dk.osl.intelligentbil.Model.Trip;
+import dk.osl.intelligentbil.Model.User;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 /**
  * Created by Oliver on 11-05-2018.

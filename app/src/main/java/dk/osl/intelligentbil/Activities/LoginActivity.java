@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil;
+package dk.osl.intelligentbil.Activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +11,10 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
-import dk.osl.intelligentbil.testretro.GetDataService;
-import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
-import dk.osl.intelligentbil.testretro.User;
+import dk.osl.intelligentbil.R;
+import dk.osl.intelligentbil.Retrofit.GetDataService;
+import dk.osl.intelligentbil.Retrofit.RetrofitClientInstance;
+import dk.osl.intelligentbil.Model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    public void loginRequest(){
+        public void loginRequest(){
         //get from input fields
        final  String username = usernameEt.getText().toString();
         String password = passwordEt.getText().toString();

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context="dk.osl.intelligentbil.MainActivity"
+    tools:context="dk.osl.intelligentbil.Activities.MainActivity"
     android:orientation="vertical">
     <!--
   https://material.io/color/#!/?view.left=0&view.right=0&primary.color=607D8B&primary.text.color=000000

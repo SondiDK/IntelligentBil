@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import dk.osl.intelligentbil.DataInterpreter;
+import dk.osl.intelligentbil.Model.DataInterpreter;
 import dk.osl.intelligentbil.IDataCommunication;
 import dk.osl.intelligentbil.R;
 

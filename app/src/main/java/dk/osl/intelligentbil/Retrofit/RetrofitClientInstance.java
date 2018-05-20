@@ -1,4 +1,4 @@
-package dk.osl.intelligentbil.testretro;
+package dk.osl.intelligentbil.Retrofit;
 
 import java.io.IOException;
 

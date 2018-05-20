@@ -19,10 +19,10 @@ import java.util.List;
 
 import dk.osl.intelligentbil.IDataCommunication;
 import dk.osl.intelligentbil.R;
-import dk.osl.intelligentbil.testretro.GetDataService;
-import dk.osl.intelligentbil.testretro.RetrofitClientInstance;
-import dk.osl.intelligentbil.testretro.Trip;
-import dk.osl.intelligentbil.testretro.User;
+import dk.osl.intelligentbil.Retrofit.GetDataService;
+import dk.osl.intelligentbil.Retrofit.RetrofitClientInstance;
+import dk.osl.intelligentbil.Model.Trip;
+import dk.osl.intelligentbil.Model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

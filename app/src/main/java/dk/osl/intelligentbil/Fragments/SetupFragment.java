@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import dk.osl.intelligentbil.IDataCommunication;
-import dk.osl.intelligentbil.MainActivity;
+import dk.osl.intelligentbil.Activities.MainActivity;
 import dk.osl.intelligentbil.R;
 
 /**
