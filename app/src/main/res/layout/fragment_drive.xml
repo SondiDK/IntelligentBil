@@ -90,7 +90,7 @@
             >
             <TextView
                 android:textColor="@android:color/black"
-                android:text="Durarion "
+                android:text="Duration "
                 android:padding="3dip" />
             <Chronometer
 

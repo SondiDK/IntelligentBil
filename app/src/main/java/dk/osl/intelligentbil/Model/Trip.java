@@ -22,23 +22,23 @@ public class Trip {
     @Expose
     private String name;
 
-    /*
+
     @SerializedName("speed")
     @Expose
     private Double speedAverage;
-*/
 
     @SerializedName("time_length")
     @Expose
     private int duration;
 
 
-    public Trip(String date, Double powerAverage, int distance, String name, int duration) {
+    public Trip(String date, Double powerAverage, int distance, String name, int duration, Double speedAverage) {
         this.date = date;
         this.powerAverage = powerAverage;
         this.distance = distance;
         this.name = name;
         this.duration = duration;
+        this.speedAverage = speedAverage;
     }
 
     public String getName() {
@@ -48,7 +48,7 @@ public class Trip {
     public void setName(String name) {
         this.name = name;
     }
-/*
+
     public Double getSpeedAverage() {
         return speedAverage;
     }
@@ -56,7 +56,7 @@ public class Trip {
     public void setSpeedAverage(Double speedAverage) {
         this.speedAverage = speedAverage;
     }
-*/
+
     public Double getPowerAverage() {
         return powerAverage;
     }

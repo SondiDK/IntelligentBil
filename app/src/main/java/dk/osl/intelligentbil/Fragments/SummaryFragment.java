@@ -50,15 +50,13 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
 
 
         textview = getActivity().findViewById(R.id.headline);
-        textview .setText(mCallback.getTripName());
+        textview.setText(mCallback.getTripName());
 
         averageSpeed = view.findViewById(R.id.avgspd);
         averagePower = view.findViewById(R.id.avgpow);
         duration = view.findViewById(R.id.duration);
         totalDistance = view.findViewById(R.id.totaldist);
         uploadStatus = view.findViewById(R.id.upstatus);
-
-
         getLists();
         Double avgspd = calculateListAverage(speedList);
         Double avgpow = calculateListAverage(effectList);
@@ -70,9 +68,9 @@ public class SummaryFragment extends Fragment implements View.OnClickListener {
         averageSpeed.setText(df.format(avgspd) + " km/h");
         averagePower.setText(df.format(avgpow)+" w");
         totalDistance.setText(mCallback.getDistance() + " km/h");
-        duration.setText(Integer.toString(mCallback.getDuration()) + " min");
+        duration.setText(Integer.toString(mCallback.getDuration()) + " m");
 
-        drive = new Trip(getDate(),avgpow,mCallback.getDistance() , tripName,durationInMinutes);
+        drive = new Trip(getDate(),avgpow,mCallback.getDistance() , tripName,durationInMinutes, avgspd);
         uploadDrive();
         bckButton = view.findViewById(R.id.sumButton);
         bckButton.setOnClickListener(this);

@@ -42,9 +42,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginBtn = (Button) findViewById(R.id.loginbtn);
         loginBtn.setOnClickListener(this);
 
-        //Todo remove when done
-        usernameEt.setText("Klaus");
-        passwordEt.setText("flagstang");
+
     }
 
     @Override

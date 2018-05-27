@@ -44,9 +44,8 @@ public class DataInterpreter {
     }
 
     //start på hvordan det kan handles
-    public TYPE handleMessage(String message){
+    private TYPE handleMessage(String message){
         Log.d(TAG, "handleMessage " + message);
-
 
           if(message.length()>1) {
               //afkoder typen
@@ -61,7 +60,6 @@ public class DataInterpreter {
                       Log.d(TAG, "MessageType: Dist");
                       return TYPE.DISTANCE;
               }
-
           }
         return TYPE.UNKNOWN;
     }

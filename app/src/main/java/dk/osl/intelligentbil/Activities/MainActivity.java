@@ -190,8 +190,6 @@ this.distance = distance;
 
     @Override
     public void onBluetoothSerialRead(String message) {
-
-
         //Update the fragment
         DriveFragment frag =(DriveFragment)getFragmentManager().findFragmentByTag("driveFrag");
         boolean fragmentExist= frag!=null;
@@ -206,7 +204,6 @@ this.distance = distance;
     public void onBluetoothDeviceSelected(BluetoothDevice device) {
         Log.d(TAG, "onBluetoothDeviceSelected: ");
         bluetoothSerial.connect(device);
-
     }
 
     @Override
